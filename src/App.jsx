@@ -1,8 +1,14 @@
+import { Routes, Route } from "react-router-dom";
+import PageContent from "./layout/PageContent";
+import HomePage from "./pages/HomePage";
+
 function App() {
   return (
-    <div className="bg-black min-h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-red-500">TAILWIND ÇALIŞIYOR</h1>
-    </div>
+    <PageContent>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+    </PageContent>
   );
 }
 
