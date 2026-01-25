@@ -1,3 +1,5 @@
+import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+
 function Footer() {
   return (
     <footer className="mt-24 border-t">
@@ -6,9 +8,12 @@ function Footer() {
         <div className="flex justify-between items-center pb-8 border-b">
           <h2 className="text-xl font-bold">Bandage</h2>
           <div className="flex gap-4 text-[#23A6F0]">
-            <span>FB</span>
-            <span>IG</span>
-            <span>TW</span>
+            <div className="flex gap-4 text-gray-500">
+              <Instagram size={16} />
+              <Facebook size={16} />
+              <Youtube size={16} />
+              <Twitter size={16} />
+            </div>
           </div>
         </div>
 
