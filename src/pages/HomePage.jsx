@@ -1,24 +1,266 @@
+import ProductCard from "../components/ProductCard";
+import HeroSlider from "../components/HeroSlider";
+import VitaSlider from "../components/VitaSlider";
+
 function HomePage() {
+  const products = [
+    {
+      id: 1,
+      image: "https://picsum.photos/400/600?10",
+      title: "Graphic Design",
+      price: "$16.48",
+    },
+    {
+      id: 2,
+      image: "https://picsum.photos/400/600?11",
+      title: "Graphic Design",
+      price: "$16.48",
+    },
+    {
+      id: 3,
+      image: "https://picsum.photos/400/600?12",
+      title: "Graphic Design",
+      price: "$16.48",
+    },
+    {
+      id: 4,
+      image: "https://picsum.photos/400/600?13",
+      title: "Graphic Design",
+      price: "$16.48",
+    },
+    {
+      id: 5,
+      image: "https://picsum.photos/400/600?14",
+      title: "Graphic Design",
+      price: "$16.48",
+    },
+    {
+      id: 6,
+      image: "https://picsum.photos/400/600?15",
+      title: "Graphic Design",
+      price: "$16.48",
+    },
+    {
+      id: 7,
+      image: "https://picsum.photos/400/600?16",
+      title: "Graphic Design",
+      price: "$16.48",
+    },
+    {
+      id: 8,
+      image: "https://picsum.photos/400/600?17",
+      title: "Graphic Design",
+      price: "$16.48",
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-10">
-      {/*  Slider placeholder */}
-      <section className="h-[300px] bg-gray-200 flex items-center justify-center">
-        <span className="text-sm">Slider </span>
-      </section>
+      {/*  Slider */}
+      <HeroSlider />
 
       {/* Editors Pick */}
-      <section className="px-4">
-        <h2 className="text-lg font-semibold mb-4">Editors Pick</h2>
-        <div className="h-[200px] bg-gray-100 flex items-center justify-center">
-          <span className="text-sm">Editors Pick </span>
+      <section className="px-4 mt-16">
+        <h2 className="text-lg font-semibold text-center mb-2">
+          EDITOR’S PICK
+        </h2>
+        <p className="text-sm text-center text-gray-500 mb-8">
+          Problems trying to resolve the conflict between
+        </p>
+
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 px-4 md:px-0">
+          {/* LEFT – MEN */}
+          <div className="relative md:w-1/2">
+            <img
+              src="https://picsum.photos/600/800?1"
+              alt="Men"
+              className="w-full h-[500px] object-cover"
+            />
+            <span className="absolute bottom-4 left-4 bg-white px-4 py-2 text-sm font-semibold">
+              MEN
+            </span>
+          </div>
+
+          {/* RIGHT */}
+          <div className="flex flex-col md:flex-row gap-6 md:w-1/2">
+            {/* WOMEN */}
+            <div className="relative md:w-1/2">
+              <img
+                src="https://picsum.photos/600/800?2"
+                alt="Women"
+                className="w-full h-[500px] object-cover"
+              />
+              <span className="absolute bottom-4 left-4 bg-white px-4 py-2 text-sm font-semibold">
+                WOMEN
+              </span>
+            </div>
+
+            {/* ACCESSORIES + KIDS */}
+            <div className="flex flex-col gap-6 md:w-1/2">
+              <div className="relative">
+                <img
+                  src="https://picsum.photos/300/300?3"
+                  alt="Accessories"
+                  className="w-full h-[235px] object-cover"
+                />
+                <span className="absolute bottom-4 left-4 bg-white px-3 py-1 text-sm font-semibold">
+                  ACCESSORIES
+                </span>
+              </div>
+
+              <div className="relative">
+                <img
+                  src="https://picsum.photos/300/300?4"
+                  alt="Kids"
+                  className="w-full h-[235px] object-cover"
+                />
+                <span className="absolute bottom-4 left-4 bg-white px-3 py-1 text-sm font-semibold">
+                  KIDS
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Products */}
-      <section className="px-4">
-        <h2 className="text-lg font-semibold mb-4">Bestseller Products</h2>
-        <div className="h-[300px] bg-gray-100 flex items-center justify-center">
-          <span className="text-sm">Product Cards</span>
+      {/* Bestseller Products */}
+      <section className="mt-16">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-lg font-semibold text-center mb-8">
+            BESTSELLER PRODUCTS
+          </h2>
+
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+            {products.map((product) => (
+              <ProductCard
+                key={product.id}
+                image={product.image}
+                title={product.title}
+                price={product.price}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Vita Classic Product */}
+      <VitaSlider />
+
+      {/* Part of the Neural Universe */}
+      <section className="mt-24">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex flex-col-reverse md:flex-row items-center gap-10">
+            {/* Image */}
+            <div className="w-full md:w-1/2">
+              <img
+                src="https://picsum.photos/600/500?200"
+                alt="Neural Universe"
+                className="w-full object-cover"
+              />
+            </div>
+
+            {/* Content */}
+            <div className="w-full md:w-1/2 flex flex-col gap-4 text-center md:text-left">
+              <span className="text-xs uppercase tracking-wide text-gray-500">
+                Summer 2020
+              </span>
+
+              <h2 className="text-2xl md:text-3xl font-bold">
+                Part of the Neural <br /> Universe
+              </h2>
+
+              <p className="text-sm text-gray-500 max-w-md mx-auto md:mx-0">
+                We know how large objects will act, but things on a small scale.
+              </p>
+
+              {/* Buttons */}
+              <div className="flex flex-col md:flex-row gap-3 items-center md:items-start mt-4">
+                <button className="bg-[#23A6F0] text-white px-4 py-2 text-xs font-semibold min-w-[120px] text-center">
+                  BUY NOW
+                </button>
+                <button className="border border-[#23A6F0] text-[#23A6F0] px-4 py-2 text-xs font-semibold min-w-[120px] text-center">
+                  READ MORE
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Posts */}
+      <section className="mt-20">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-lg font-semibold text-center mb-2">
+            Featured Posts
+          </h2>
+          <p className="text-sm text-center text-gray-500 mb-10">
+            Problems trying to resolve the conflict between
+          </p>
+
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            {/* Post */}
+            <div className="flex flex-col gap-4">
+              <img
+                src="https://picsum.photos/400/250?101"
+                alt="Post"
+                className="w-full object-cover"
+              />
+              <div className="flex gap-2 text-xs text-gray-500">
+                <span>Google</span>
+                <span>Trending</span>
+                <span>New</span>
+              </div>
+              <h3 className="font-semibold text-sm">Loudest à la Madison #1</h3>
+              <p className="text-sm text-gray-500">
+                We focus on ergonomics and meeting you where you work.
+              </p>
+              <span className="text-sm font-semibold cursor-pointer">
+                Learn More →
+              </span>
+            </div>
+
+            {/* 2 */}
+            <div className="flex flex-col gap-4">
+              <img
+                src="https://picsum.photos/400/250?102"
+                alt="Post"
+                className="w-full object-cover"
+              />
+              <div className="flex gap-2 text-xs text-gray-500">
+                <span>Google</span>
+                <span>Trending</span>
+                <span>New</span>
+              </div>
+              <h3 className="font-semibold text-sm">Loudest à la Madison #1</h3>
+              <p className="text-sm text-gray-500">
+                We focus on ergonomics and meeting you where you work.
+              </p>
+              <span className="text-sm font-semibold cursor-pointer">
+                Learn More →
+              </span>
+            </div>
+
+            {/* 3 */}
+            <div className="flex flex-col gap-4">
+              <img
+                src="https://picsum.photos/400/250?103"
+                alt="Post"
+                className="w-full object-cover"
+              />
+              <div className="flex gap-2 text-xs text-gray-500">
+                <span>Google</span>
+                <span>Trending</span>
+                <span>New</span>
+              </div>
+              <h3 className="font-semibold text-sm">Loudest à la Madison #1</h3>
+              <p className="text-sm text-gray-500">
+                We focus on ergonomics and meeting you where you work.
+              </p>
+              <span className="text-sm font-semibold cursor-pointer">
+                Learn More →
+              </span>
+            </div>
+          </div>
         </div>
       </section>
     </div>
