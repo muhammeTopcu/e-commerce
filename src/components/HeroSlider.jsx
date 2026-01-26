@@ -19,33 +19,47 @@ function HeroSlider() {
       >
         <SwiperSlide>
           <div
-            className="h-[400px] md:h-[800px] bg-cover bg-center flex items-center "
+            className="h-[400px] md:h-[800px] bg-cover bg-center flex items-center"
             style={{ backgroundImage: `url(${heroImage})` }}
           >
-            <div className="max-w-6xl mx-auto px-6 text-white">
-              <span className="text-sm uppercase">SUMMER 2020</span>
-              <h2 className="text-3xl md:text-5xl font-bold mt-2">
-                NEW COLLECTION
-              </h2>
-              <p className="text-sm mt-4 max-w-md">
-                We know how large objects will act, but things on a small scale.
-              </p>
-              <button
+            <div className="max-w-6xl mx-auto px-6 w-full">
+              <div
                 className="
-    mt-6
-    bg-[#2DC071]
-    text-white
-    px-6
-    py-2
-    w-fit
-    mx-auto
-    md:mx-0
-    text-sm
-    font-semibold
-  "
+                text-white
+                max-w-md
+                text-center
+                md:text-left
+                md:ml-0
+              "
               >
-                SHOP NOW
-              </button>
+                <span className="text-sm uppercase">SUMMER 2020</span>
+
+                <h2 className="text-3xl md:text-5xl font-bold mt-2">
+                  NEW COLLECTION
+                </h2>
+
+                <p className="text-sm mt-4">
+                  We know how large objects will act, but things on a small
+                  scale.
+                </p>
+
+                <button
+                  className="
+                    mt-6
+                    bg-[#2DC071]
+                    text-white
+                    px-6
+                    py-2
+                    w-fit
+                    mx-auto
+                    md:mx-0
+                    text-sm
+                    font-semibold
+                  "
+                >
+                  SHOP NOW
+                </button>
+              </div>
             </div>
           </div>
         </SwiperSlide>
@@ -58,12 +72,12 @@ function HeroSlider() {
             <div className="max-w-6xl mx-auto px-6 w-full">
               <div
                 className="
-        text-white
-        max-w-md
-        text-center
-        md:text-left
-        md:ml-0
-      "
+                text-white
+                max-w-md
+                text-center
+                md:text-left
+                md:ml-0
+              "
               >
                 <span className="text-sm uppercase">SUMMER 2020</span>
 
