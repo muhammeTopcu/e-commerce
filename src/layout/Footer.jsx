@@ -2,17 +2,29 @@ import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 
 function Footer() {
   return (
-    <footer className="mt-24 border-t">
+    <footer className="mt-2 ">
       <div className="max-w-6xl mx-auto px-4 py-12">
-        {/* Top */}
+        {/* Social */}
         <div className="flex justify-between items-center pb-8 border-b">
           <h2 className="text-xl font-bold">Bandage</h2>
           <div className="flex gap-4 text-[#23A6F0]">
-            <div className="flex gap-4 text-gray-500">
-              <Instagram size={16} />
-              <Facebook size={16} />
-              <Youtube size={16} />
-              <Twitter size={16} />
+            <div className="flex items-center gap-4">
+              <Instagram
+                size={18}
+                className="cursor-pointer text-[#23A6F0] hover:text-[#1B8ED8] transition"
+              />
+              <Facebook
+                size={18}
+                className="cursor-pointer text-[#23A6F0] hover:text-[#1B8ED8] transition"
+              />
+              <Youtube
+                size={18}
+                className="cursor-pointer text-[#23A6F0] hover:text-[#1B8ED8] transition"
+              />
+              <Twitter
+                size={18}
+                className="cursor-pointer text-[#23A6F0] hover:text-[#1B8ED8] transition"
+              />
             </div>
           </div>
         </div>

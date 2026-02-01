@@ -110,16 +110,6 @@ function HeroSlider() {
             </div>
           </div>
         </SwiperSlide>
-
-        <SwiperSlide>
-          <div className="h-[400px] md:h-[800px] bg-blue-500 text-white flex flex-col justify-center px-6 md:px-20 gap-4">
-            <span className="text-sm uppercase">Winter 2020</span>
-            <h2 className="text-2xl font-bold">New Arrivals</h2>
-            <button className="bg-white text-blue-600 px-6 py-2 w-fit">
-              SHOP NOW
-            </button>
-          </div>
-        </SwiperSlide>
       </Swiper>
     </section>
   );

@@ -136,7 +136,10 @@ function HomePage() {
                 key={product.id}
                 image={product.image}
                 title={product.title}
-                price={product.price}
+                subtitle="English Department"
+                price="$6.48"
+                oldPrice="$16.48"
+                colors={["#23A6F0", "#23856D", "#E77C40", "#252B42"]}
               />
             ))}
           </div>
@@ -175,10 +178,10 @@ function HomePage() {
 
               {/* Buttons */}
               <div className="flex flex-col md:flex-row gap-3 items-center md:items-start mt-4">
-                <button className="bg-[#23A6F0] text-white px-4 py-2 text-xs font-semibold min-w-[120px] text-center">
+                <button className="bg-[#2DC071] text-white px-4 py-2 text-xs font-semibold min-w-[120px] text-center">
                   BUY NOW
                 </button>
-                <button className="border border-[#23A6F0] text-[#23A6F0] px-4 py-2 text-xs font-semibold min-w-[120px] text-center">
+                <button className="border border-[#2DC071] text-[#2DC071] px-4 py-2 text-xs font-semibold min-w-[120px] text-center">
                   READ MORE
                 </button>
               </div>
@@ -190,76 +193,69 @@ function HomePage() {
       {/* Featured Posts */}
       <section className="mt-20">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-lg font-semibold text-center mb-2">
+          <span className="block text-center text-sm text-blue-500 font-semibold mb-2">
+            Practice Advice
+          </span>
+
+          <h2 className="text-3xl font-bold text-center mb-2">
             Featured Posts
           </h2>
-          <p className="text-sm text-center text-gray-500 mb-10">
-            Problems trying to resolve the conflict between
+
+          <p className="text-sm text-center text-gray-500 mb-12 max-w-xl mx-auto">
+            Problems trying to resolve the conflict between the two major realms
+            of Classical physics: Newtonian mechanics
           </p>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {/* Post */}
-            <div className="flex flex-col gap-4">
-              <img
-                src="https://picsum.photos/400/250?101"
-                alt="Post"
-                className="w-full object-cover"
-              />
-              <div className="flex gap-2 text-xs text-gray-500">
-                <span>Google</span>
-                <span>Trending</span>
-                <span>New</span>
-              </div>
-              <h3 className="font-semibold text-sm">Loudest à la Madison #1</h3>
-              <p className="text-sm text-gray-500">
-                We focus on ergonomics and meeting you where you work.
-              </p>
-              <span className="text-sm font-semibold cursor-pointer">
-                Learn More →
-              </span>
-            </div>
+            {[101, 102, 103].map((id) => (
+              <div
+                key={id}
+                className="border rounded-lg overflow-hidden flex flex-col"
+              >
+                {/* Image */}
+                <div className="relative">
+                  <img
+                    src={`https://picsum.photos/400/250?${id}`}
+                    alt="Post"
+                    className="w-full h-[250px] object-cover"
+                  />
 
-            {/* 2 */}
-            <div className="flex flex-col gap-4">
-              <img
-                src="https://picsum.photos/400/250?102"
-                alt="Post"
-                className="w-full object-cover"
-              />
-              <div className="flex gap-2 text-xs text-gray-500">
-                <span>Google</span>
-                <span>Trending</span>
-                <span>New</span>
-              </div>
-              <h3 className="font-semibold text-sm">Loudest à la Madison #1</h3>
-              <p className="text-sm text-gray-500">
-                We focus on ergonomics and meeting you where you work.
-              </p>
-              <span className="text-sm font-semibold cursor-pointer">
-                Learn More →
-              </span>
-            </div>
+                  {/* NEW badge */}
+                  <span className="absolute top-4 left-4 bg-red-500 text-white text-xs px-3 py-1 rounded">
+                    NEW
+                  </span>
+                </div>
 
-            {/* 3 */}
-            <div className="flex flex-col gap-4">
-              <img
-                src="https://picsum.photos/400/250?103"
-                alt="Post"
-                className="w-full object-cover"
-              />
-              <div className="flex gap-2 text-xs text-gray-500">
-                <span>Google</span>
-                <span>Trending</span>
-                <span>New</span>
+                {/* Content */}
+                <div className="p-5 flex flex-col gap-3">
+                  {/* Tags */}
+                  <div className="flex gap-3 text-xs">
+                    <span className="text-blue-500 cursor-pointer">Google</span>
+                    <span className="text-gray-400">Trending</span>
+                    <span className="text-gray-400">New</span>
+                  </div>
+
+                  <h3 className="font-semibold text-base">
+                    Loudest à la Madison #1 (L'integral)
+                  </h3>
+
+                  <p className="text-sm text-gray-500">
+                    We focus on ergonomics and meeting you where you work. It's
+                    only a keystroke away.
+                  </p>
+
+                  {/* Meta */}
+                  <div className="flex items-center justify-between text-xs text-gray-400 mt-4">
+                    <span>📅 22 April 2021</span>
+                    <span>💬 10 comments</span>
+                  </div>
+
+                  <span className="text-sm font-semibold text-blue-500 cursor-pointer mt-2">
+                    Learn More →
+                  </span>
+                </div>
               </div>
-              <h3 className="font-semibold text-sm">Loudest à la Madison #1</h3>
-              <p className="text-sm text-gray-500">
-                We focus on ergonomics and meeting you where you work.
-              </p>
-              <span className="text-sm font-semibold cursor-pointer">
-                Learn More →
-              </span>
-            </div>
+            ))}
           </div>
         </div>
       </section>
