@@ -48,14 +48,12 @@ function ShopPage() {
                 key={cat.id}
                 className="group relative block overflow-hidden"
               >
-                {/* IMAGE */}
                 <img
                   src={cat.image}
                   alt={cat.title}
                   className="w-full h-[220px] object-cover transition-transform duration-300 group-hover:scale-105"
                 />
 
-                {/* OVERLAY */}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center text-white">
                   <span className="text-sm font-semibold tracking-wide">
                     {cat.title}
@@ -100,15 +98,20 @@ function ShopPage() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
-              <ProductCard
+              <Link
                 key={product.id}
-                image={product.image}
-                title={product.title}
-                subtitle="English Department"
-                price="$6.48"
-                oldPrice="$16.48"
-                colors={["#23A6F0", "#23856D", "#E77C40", "#252B42"]}
-              />
+                to={`/product/${product.id}`}
+                className="block"
+              >
+                <ProductCard
+                  image={product.image}
+                  title={product.title}
+                  subtitle="English Department"
+                  price="$6.48"
+                  oldPrice="$16.48"
+                  colors={["#23A6F0", "#23856D", "#E77C40", "#252B42"]}
+                />
+              </Link>
             ))}
           </div>
         </div>

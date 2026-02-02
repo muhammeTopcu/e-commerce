@@ -1,8 +1,6 @@
-import { Link } from "react-router-dom";
-
 function ProductCard({ image, title, subtitle, price, oldPrice, colors = [] }) {
   return (
-    <Link to="#" className="group block">
+    <div className="group block cursor-pointer">
       <div className="flex flex-col gap-3">
         {/* IMAGE */}
         <div className="relative overflow-hidden bg-gray-100">
@@ -52,7 +50,7 @@ function ProductCard({ image, title, subtitle, price, oldPrice, colors = [] }) {
           )}
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
