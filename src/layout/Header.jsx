@@ -46,13 +46,29 @@ function Header() {
           </h1>
 
           {/* DESKTOP NAV */}
-          <nav className="hidden md:flex gap-4 text-sm text-gray-600">
+          <nav className="hidden md:flex gap-4 text-sm text-gray-600 relative">
             <Link to="/">Home</Link>
             <Link to="/shop">Shop</Link>
             <Link to="/about">About</Link>
             <Link to="/blog">Blog</Link>
             <Link to="/contact">Contact</Link>
-            <Link to="/pages">Pages</Link>
+            <div className="relative group">
+              <span className="flex items-center gap-1 cursor-pointer">
+                Pages
+                <span aria-hidden="true" className="text-xs leading-none">
+                  ▼
+                </span>
+              </span>
+              <div className="absolute left-0 top-full mt-1 w-40 rounded-md border bg-white shadow-lg z-50 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition">
+                <span className="absolute -top-3 left-0 h-3 w-full" />
+                <Link
+                  to="/team"
+                  className="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
+                >
+                  Team
+                </Link>
+              </div>
+            </div>
           </nav>
 
           {/* RIGHT */}
@@ -90,14 +106,14 @@ function Header() {
             <Link onClick={() => setMobileOpen(false)} to="/about">
               About
             </Link>
+            <Link onClick={() => setMobileOpen(false)} to="/team">
+              Team
+            </Link>
             <Link onClick={() => setMobileOpen(false)} to="/blog">
               Blog
             </Link>
             <Link onClick={() => setMobileOpen(false)} to="/contact">
               Contact
-            </Link>
-            <Link onClick={() => setMobileOpen(false)} to="/pages">
-              Pages
             </Link>
           </div>
 
