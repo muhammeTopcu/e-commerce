@@ -24,10 +24,10 @@ const categories = [
 
 function ShopPage() {
   return (
-    <div className="flex flex-col gap-6 px-4 mt-6">
+    <div className="flex flex-col gap-6 px-0 md:px-4 mt-6">
       {/* PAGE HEADER */}
-      <section className="bg-gray-100">
-        <div className="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
+      <section>
+        <div className="max-w-6xl mx-auto px-0 md:px-4 py-6 flex items-center justify-between">
           <h1 className="text-xl font-bold text-[#252B42]">Shop</h1>
 
           <div className="text-sm text-gray-500">
@@ -40,7 +40,7 @@ function ShopPage() {
 
       {/* CATEGORIES */}
       <section className="mt-4">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-0 md:px-4">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             {categories.map((cat) => (
               <Link
@@ -68,7 +68,7 @@ function ShopPage() {
 
       {/* FILTER BAR */}
       <section className="border-b mt-6">
-        <div className="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between text-sm">
+        <div className="max-w-6xl mx-auto px-0 md:px-4 py-6 flex items-center justify-between text-sm">
           <span className="text-gray-600">Showing 16 results</span>
 
           <div className="flex items-center gap-4">
@@ -95,7 +95,7 @@ function ShopPage() {
 
       {/* PRODUCTS */}
       <section className="mt-8">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-0 md:px-4">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
               <Link
@@ -130,12 +130,12 @@ function ShopPage() {
       {/* BRANDS */}
       <section className="py-8 ">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
-          <img src={hooli} alt="Hooli" className="h-10 md:h-12 opacity-60" />
-          <img src={lyft} alt="Lyft" className="h-10 md:h-12 opacity-60" />
-          <img src={digeri} alt="Brand" className="h-10 md:h-12 opacity-60" />
-          <img src={stripe} alt="Stripe" className="h-10 md:h-12 opacity-60" />
-          <img src={aws} alt="AWS" className="h-10 md:h-12 opacity-60" />
-          <img src={reddit} alt="Reddit" className="h-10 md:h-12 opacity-60" />
+          <img src={hooli} alt="Hooli" className="h-10 md:h-12 " />
+          <img src={lyft} alt="Lyft" className="h-10 md:h-12 " />
+          <img src={digeri} alt="Brand" className="h-10 md:h-12 " />
+          <img src={stripe} alt="Stripe" className="h-10 md:h-12 " />
+          <img src={aws} alt="AWS" className="h-10 md:h-12 " />
+          <img src={reddit} alt="Reddit" className="h-10 md:h-12 " />
         </div>
       </section>
     </div>

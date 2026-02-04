@@ -52,7 +52,7 @@ const teamMembers = [
 
 function TeamPage() {
   return (
-    <section className="max-w-6xl mx-auto px-4 py-16 md:py-20">
+    <section className="max-w-6xl mx-auto px-0 md:px-4 py-16 md:py-20">
       <div className="text-center max-w-2xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-[#252B42]">
           Meet Our Team

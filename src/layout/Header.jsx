@@ -29,10 +29,34 @@ function Header() {
 
           <div className="flex items-center gap-2">
             <span className="mr-1">Follow Us :</span>
-            <Instagram size={14} />
-            <Youtube size={14} />
-            <Facebook size={14} />
-            <Twitter size={14} />
+            <a
+              href="#"
+              onClick={(event) => event.preventDefault()}
+              aria-label="Instagram"
+            >
+              <Instagram size={14} />
+            </a>
+            <a
+              href="#"
+              onClick={(event) => event.preventDefault()}
+              aria-label="YouTube"
+            >
+              <Youtube size={14} />
+            </a>
+            <a
+              href="#"
+              onClick={(event) => event.preventDefault()}
+              aria-label="Facebook"
+            >
+              <Facebook size={14} />
+            </a>
+            <a
+              href="#"
+              onClick={(event) => event.preventDefault()}
+              aria-label="Twitter"
+            >
+              <Twitter size={14} />
+            </a>
           </div>
         </div>
       </div>
@@ -94,7 +118,7 @@ function Header() {
 
       {/* MOBILE MENU*/}
       {mobileOpen && (
-        <div className="absolute top-full left-0 w-full bg-white border-b z-40">
+        <div className="w-full bg-white border-b">
           {/* LINKS */}
           <div className="flex flex-col items-center gap-6 py-10 text-lg text-gray-600">
             <Link onClick={() => setMobileOpen(false)} to="/">

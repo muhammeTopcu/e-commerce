@@ -9,22 +9,46 @@ function Footer() {
           <h2 className="text-xl font-bold">Bandage</h2>
           <div className="flex gap-4 text-[#23A6F0]">
             <div className="flex items-center gap-4">
-              <Instagram
-                size={18}
-                className="cursor-pointer text-[#23A6F0] hover:text-[#1B8ED8] transition"
-              />
-              <Facebook
-                size={18}
-                className="cursor-pointer text-[#23A6F0] hover:text-[#1B8ED8] transition"
-              />
-              <Youtube
-                size={18}
-                className="cursor-pointer text-[#23A6F0] hover:text-[#1B8ED8] transition"
-              />
-              <Twitter
-                size={18}
-                className="cursor-pointer text-[#23A6F0] hover:text-[#1B8ED8] transition"
-              />
+              <a
+                href="#"
+                onClick={(event) => event.preventDefault()}
+                aria-label="Instagram"
+              >
+                <Instagram
+                  size={18}
+                  className="cursor-pointer text-[#23A6F0] hover:text-[#1B8ED8] transition"
+                />
+              </a>
+              <a
+                href="#"
+                onClick={(event) => event.preventDefault()}
+                aria-label="Facebook"
+              >
+                <Facebook
+                  size={18}
+                  className="cursor-pointer text-[#23A6F0] hover:text-[#1B8ED8] transition"
+                />
+              </a>
+              <a
+                href="#"
+                onClick={(event) => event.preventDefault()}
+                aria-label="YouTube"
+              >
+                <Youtube
+                  size={18}
+                  className="cursor-pointer text-[#23A6F0] hover:text-[#1B8ED8] transition"
+                />
+              </a>
+              <a
+                href="#"
+                onClick={(event) => event.preventDefault()}
+                aria-label="Twitter"
+              >
+                <Twitter
+                  size={18}
+                  className="cursor-pointer text-[#23A6F0] hover:text-[#1B8ED8] transition"
+                />
+              </a>
             </div>
           </div>
         </div>

@@ -11,27 +11,16 @@ function HeroSlider() {
       <Swiper
         modules={[Pagination, Autoplay, Navigation]}
         pagination={{ clickable: true }}
-        navigation={{
-          nextEl: ".vita-next",
-          prevEl: ".vita-prev",
-        }}
+        navigation
         autoplay={{ delay: 3500 }}
       >
         <SwiperSlide>
           <div
-            className="h-[400px] md:h-[800px] bg-cover bg-center flex items-center"
+            className="h-[400px] md:h-[700px] bg-cover bg-center"
             style={{ backgroundImage: `url(${heroImage})` }}
           >
-            <div className="max-w-6xl mx-auto px-6 w-full">
-              <div
-                className="
-                text-white
-                max-w-md
-                text-center
-                md:text-left
-                md:ml-0
-              "
-              >
+            <div className="max-w-6xl mx-auto px-6 w-full h-full flex items-center md:grid md:grid-cols-2">
+              <div className="text-white max-w-md text-center md:text-left md:justify-self-center md:col-start-1">
                 <span className="text-sm uppercase">SUMMER 2020</span>
 
                 <h2 className="text-3xl md:text-5xl font-bold mt-2">
@@ -66,19 +55,11 @@ function HeroSlider() {
 
         <SwiperSlide>
           <div
-            className="h-[400px] md:h-[800px] bg-cover bg-center flex items-center"
+            className="h-[400px] md:h-[700px] bg-cover bg-center"
             style={{ backgroundImage: `url(${heroImage})` }}
           >
-            <div className="max-w-6xl mx-auto px-6 w-full">
-              <div
-                className="
-                text-white
-                max-w-md
-                text-center
-                md:text-left
-                md:ml-0
-              "
-              >
+            <div className="max-w-6xl mx-auto px-6 w-full h-full flex items-center md:grid md:grid-cols-2">
+              <div className="text-white max-w-md text-center md:text-left md:justify-self-center md:col-start-1">
                 <span className="text-sm uppercase">SUMMER 2020</span>
 
                 <h2 className="text-3xl md:text-5xl font-bold mt-2">

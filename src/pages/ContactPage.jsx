@@ -15,7 +15,7 @@ function ContactPage() {
         />
 
         {/* CONTENT */}
-        <div className="relative z-10 max-w-6xl mx-auto px-6 h-full grid grid-cols-1 md:grid-cols-2 items-center">
+        <div className="relative z-10 max-w-6xl mx-auto px-0 md:px-6 h-full grid grid-cols-1 md:grid-cols-2 items-center">
           {/* LEFT CONTENT */}
           <div className="flex flex-col gap-6 text-center md:text-left mt-32 md:mt-0">
             <h1 className="text-4xl md:text-5xl font-bold text-white">
@@ -71,7 +71,7 @@ function ContactPage() {
         </div>
 
         {/* MOBILE LOCATIONS */}
-        <div className="relative z-10 md:hidden px-6 pb-20 space-y-12 text-base text-white">
+        <div className="relative z-10 md:hidden px-0 md:px-6 pb-20 space-y-12 text-base text-white">
           {[
             ["Paris", "1901 Thorn ridge Cir."],
             ["Berlin", "4140 Parker Rd."],

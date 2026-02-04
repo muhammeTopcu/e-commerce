@@ -57,10 +57,12 @@ function HomePage() {
   return (
     <div className="flex flex-col gap-10">
       {/*  Slider */}
-      <HeroSlider />
+      <div className="-mx-6 md:mx-0">
+        <HeroSlider />
+      </div>
 
       {/* Editors Pick */}
-      <section className="px-4 mt-16">
+      <section className="px-0 md:px-4 mt-16">
         <h2 className="text-lg font-semibold text-center mb-2">
           EDITOR’S PICK
         </h2>
@@ -68,7 +70,7 @@ function HomePage() {
           Problems trying to resolve the conflict between
         </p>
 
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 px-4 md:px-0">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 px-0">
           {/* LEFT – MEN */}
           <div className="relative md:w-1/2">
             <img
@@ -125,7 +127,7 @@ function HomePage() {
 
       {/* Bestseller Products */}
       <section className="mt-16">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-0 md:px-4">
           <h2 className="text-lg font-semibold text-center mb-8">
             BESTSELLER PRODUCTS
           </h2>
@@ -147,11 +149,13 @@ function HomePage() {
       </section>
 
       {/* Vita Classic Product */}
-      <VitaSlider />
+      <div className="-mx-6 md:mx-0">
+        <VitaSlider />
+      </div>
 
       {/* Part of the Neural Universe */}
       <section className="mt-24">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-0 md:px-4">
           <div className="flex flex-col-reverse md:flex-row items-center gap-10">
             {/* Image */}
             <div className="w-full md:w-1/2">
@@ -192,7 +196,7 @@ function HomePage() {
 
       {/* Featured Posts */}
       <section className="mt-20">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-0 md:px-4">
           <span className="block text-center text-sm text-blue-500 font-semibold mb-2">
             Practice Advice
           </span>

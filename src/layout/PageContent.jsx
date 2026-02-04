@@ -5,7 +5,7 @@ function PageContent({ children }) {
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <main className="px-6 md:px-0">{children}</main>
       <Footer />
     </>
   );

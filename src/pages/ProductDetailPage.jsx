@@ -37,7 +37,7 @@ export default function ProductDetailPage() {
     <div className="flex flex-col">
       {/* BREADCRUMB */}
       <section className="bg-gray-100">
-        <div className="max-w-6xl mx-auto px-4 py-6 text-sm text-gray-500">
+        <div className="max-w-6xl mx-auto px-0 md:px-4 py-6 text-sm text-gray-500">
           <span className="text-[#252B42]">Home</span>
           <span className="mx-2">{">"}</span>
           <span>Shop</span>
@@ -48,7 +48,7 @@ export default function ProductDetailPage() {
       <section className="py-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10">
           {/* SLIDER */}
-          <div className="w-full md:w-1/2 px-4 md:px-0">
+          <div className="w-full md:w-1/2 px-0">
             <Swiper
               modules={[Navigation]}
               navigation
@@ -85,7 +85,7 @@ export default function ProductDetailPage() {
           </div>
 
           {/* PRODUCT INFO */}
-          <div className="md:w-1/2 px-4 md:px-0 flex flex-col gap-4">
+          <div className="md:w-1/2 px-0 flex flex-col gap-4">
             <h1 className="text-xl font-semibold text-[#252B42]">
               Floating Phone
             </h1>
@@ -138,7 +138,7 @@ export default function ProductDetailPage() {
       </section>
 
       {/* TABS */}
-      <section className="max-w-6xl mx-auto px-4 mt-16">
+      <section className="max-w-6xl mx-auto px-0 md:px-4 mt-16">
         <div className="flex justify-center gap-12 border-b pb-4 text-sm font-medium">
           {["description", "additional", "reviews"].map((tab) => (
             <button
@@ -197,7 +197,7 @@ export default function ProductDetailPage() {
       </section>
 
       {/* BESTSELLER */}
-      <section className="max-w-6xl mx-auto px-4 mt-20">
+      <section className="max-w-6xl mx-auto px-0 md:px-4 mt-20">
         <h2 className="text-lg font-semibold mb-10">BESTSELLER PRODUCTS</h2>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
