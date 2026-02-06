@@ -6,6 +6,7 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import ContactPage from "./pages/ContactPage";
 import TeamPage from "./pages/TeamPage";
 import AboutPage from "./pages/AboutPage";
+import SignupPage from "./pages/SignupPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/product/:id" element={<ProductDetailPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/team" element={<TeamPage />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </PageContent>
   );

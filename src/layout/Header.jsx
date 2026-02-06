@@ -98,8 +98,10 @@ function Header() {
           {/* RIGHT */}
           <div className="flex items-center gap-4 text-blue-500">
             {/* DESKTOP ICONS */}
-            <div className="hidden md:flex items-center gap-4">
-              <Link to="/login">Login / Register</Link>
+            <div className="hidden md:flex items-center gap-2">
+              <Link to="/login">Login</Link>
+              <span>/</span>
+              <Link to="/signup">Register</Link>
               <Search size={18} />
               <ShoppingCart size={18} />
               <Heart size={18} />
@@ -144,7 +146,9 @@ function Header() {
           {/* LOGIN */}
           <div className="flex items-center justify-center gap-2 pb-6 text-blue-500">
             <User size={18} />
-            <Link to="/login">Login / Register</Link>
+            <Link to="/login">Login</Link>
+            <span>/</span>
+            <Link to="/signup">Register</Link>
           </div>
 
           {/* ICONS */}

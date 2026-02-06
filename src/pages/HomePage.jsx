@@ -1,54 +1,71 @@
 import ProductCard from "../components/ProductCard";
 import HeroSlider from "../components/HeroSlider";
 import VitaSlider from "../components/VitaSlider";
+import { Link } from "react-router-dom";
+import menImage from "../assets/home/men.png";
+import womenImage from "../assets/home/women.png";
+import accessoriesImage from "../assets/home/accessories.png";
+import kidsImage from "../assets/home/kids.png";
+import partOfImage from "../assets/home/part_of.png";
+import featured1 from "../assets/home/featured1.png";
+import featured2 from "../assets/home/featured2.png";
+import featured3 from "../assets/home/featured3.png";
+import product1 from "../assets/home/1.png";
+import product2 from "../assets/home/2.png";
+import product3 from "../assets/home/3.png";
+import product4 from "../assets/home/4.png";
+import product5 from "../assets/home/5.png";
+import product6 from "../assets/home/6.png";
+import product7 from "../assets/home/7.png";
+import product8 from "../assets/home/8.png";
 
 function HomePage() {
   const products = [
     {
       id: 1,
-      image: "https://picsum.photos/400/600?10",
+      image: product1,
       title: "Graphic Design",
       price: "$16.48",
     },
     {
       id: 2,
-      image: "https://picsum.photos/400/600?11",
+      image: product2,
       title: "Graphic Design",
       price: "$16.48",
     },
     {
       id: 3,
-      image: "https://picsum.photos/400/600?12",
+      image: product3,
       title: "Graphic Design",
       price: "$16.48",
     },
     {
       id: 4,
-      image: "https://picsum.photos/400/600?13",
+      image: product4,
       title: "Graphic Design",
       price: "$16.48",
     },
     {
       id: 5,
-      image: "https://picsum.photos/400/600?14",
+      image: product5,
       title: "Graphic Design",
       price: "$16.48",
     },
     {
       id: 6,
-      image: "https://picsum.photos/400/600?15",
+      image: product6,
       title: "Graphic Design",
       price: "$16.48",
     },
     {
       id: 7,
-      image: "https://picsum.photos/400/600?16",
+      image: product7,
       title: "Graphic Design",
       price: "$16.48",
     },
     {
       id: 8,
-      image: "https://picsum.photos/400/600?17",
+      image: product8,
       title: "Graphic Design",
       price: "$16.48",
     },
@@ -72,54 +89,54 @@ function HomePage() {
 
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 px-0">
           {/* LEFT – MEN */}
-          <div className="relative md:w-1/2">
+          <Link to="/shop" className="relative md:w-1/2 group">
             <img
-              src="https://picsum.photos/600/800?1"
+              src={menImage}
               alt="Men"
-              className="w-full h-[500px] object-cover"
+              className="w-full h-[500px] object-cover transition-transform duration-300 group-hover:scale-[1.02]"
             />
             <span className="absolute bottom-4 left-4 bg-white px-4 py-2 text-sm font-semibold">
               MEN
             </span>
-          </div>
+          </Link>
 
           {/* RIGHT */}
           <div className="flex flex-col md:flex-row gap-6 md:w-1/2">
             {/* WOMEN */}
-            <div className="relative md:w-1/2">
+            <Link to="/shop" className="relative md:w-1/2 group">
               <img
-                src="https://picsum.photos/600/800?2"
+                src={womenImage}
                 alt="Women"
-                className="w-full h-[500px] object-cover"
+                className="w-full h-[500px] object-cover transition-transform duration-300 group-hover:scale-[1.02]"
               />
               <span className="absolute bottom-4 left-4 bg-white px-4 py-2 text-sm font-semibold">
                 WOMEN
               </span>
-            </div>
+            </Link>
 
             {/* ACCESSORIES + KIDS */}
             <div className="flex flex-col gap-6 md:w-1/2">
-              <div className="relative">
+              <Link to="/shop" className="relative group">
                 <img
-                  src="https://picsum.photos/300/300?3"
+                  src={accessoriesImage}
                   alt="Accessories"
-                  className="w-full h-[235px] object-cover"
+                  className="w-full h-[235px] object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                 />
                 <span className="absolute bottom-4 left-4 bg-white px-3 py-1 text-sm font-semibold">
                   ACCESSORIES
                 </span>
-              </div>
+              </Link>
 
-              <div className="relative">
+              <Link to="/shop" className="relative group">
                 <img
-                  src="https://picsum.photos/300/300?4"
+                  src={kidsImage}
                   alt="Kids"
-                  className="w-full h-[235px] object-cover"
+                  className="w-full h-[235px] object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                 />
                 <span className="absolute bottom-4 left-4 bg-white px-3 py-1 text-sm font-semibold">
                   KIDS
                 </span>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -134,15 +151,16 @@ function HomePage() {
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
-              <ProductCard
-                key={product.id}
-                image={product.image}
-                title={product.title}
-                subtitle="English Department"
-                price="$6.48"
-                oldPrice="$16.48"
-                colors={["#23A6F0", "#23856D", "#E77C40", "#252B42"]}
-              />
+              <Link key={product.id} to={`/product/${product.id}`}>
+                <ProductCard
+                  image={product.image}
+                  title={product.title}
+                  subtitle="English Department"
+                  price="$6.48"
+                  oldPrice="$16.48"
+                  colors={["#23A6F0", "#23856D", "#E77C40", "#252B42"]}
+                />
+              </Link>
             ))}
           </div>
         </div>
@@ -154,13 +172,13 @@ function HomePage() {
       </div>
 
       {/* Part of the Neural Universe */}
-      <section className="mt-24">
+      <section className="mt-0">
         <div className="max-w-6xl mx-auto px-0 md:px-4">
           <div className="flex flex-col-reverse md:flex-row items-center gap-10">
             {/* Image */}
             <div className="w-full md:w-1/2">
               <img
-                src="https://picsum.photos/600/500?200"
+                src={partOfImage}
                 alt="Neural Universe"
                 className="w-full object-cover"
               />
@@ -211,15 +229,15 @@ function HomePage() {
           </p>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {[101, 102, 103].map((id) => (
+            {[featured1, featured2, featured3].map((image, index) => (
               <div
-                key={id}
+                key={image}
                 className="border rounded-lg overflow-hidden flex flex-col"
               >
                 {/* Image */}
                 <div className="relative">
                   <img
-                    src={`https://picsum.photos/400/250?${id}`}
+                    src={image}
                     alt="Post"
                     className="w-full h-[250px] object-cover"
                   />

@@ -6,20 +6,45 @@ import stripe from "../assets/brands/stripe.png";
 import aws from "../assets/brands/aws.png";
 import reddit from "../assets/brands/reddit.png";
 import { Link } from "react-router-dom";
+import product1 from "../assets/product/1.png";
+import product2 from "../assets/product/2.png";
+import product3 from "../assets/product/3.png";
+import product4 from "../assets/product/4.png";
+import product5 from "../assets/product/5.png";
+import product6 from "../assets/product/6.png";
+import product7 from "../assets/product/7.png";
+import product8 from "../assets/product/8.png";
+import product9 from "../assets/product/9.png";
+import product10 from "../assets/product/10.png";
+import product11 from "../assets/product/11.png";
+import product12 from "../assets/product/12.png";
+import category1 from "../assets/shoppagecategories/1.png";
+import category2 from "../assets/shoppagecategories/2.png";
+import category3 from "../assets/shoppagecategories/3.png";
+import category4 from "../assets/shoppagecategories/4.png";
+import category5 from "../assets/shoppagecategories/5.png";
 
-const products = Array.from({ length: 12 }, (_, i) => ({
-  id: i + 1,
-  image: `https://picsum.photos/400/600?shop=${i}`,
-  title: "Graphic Design",
-  price: "$16.48",
-}));
+const products = [
+  { id: 1, image: product1, title: "Graphic Design", price: "$16.48" },
+  { id: 2, image: product2, title: "Graphic Design", price: "$16.48" },
+  { id: 3, image: product3, title: "Graphic Design", price: "$16.48" },
+  { id: 4, image: product4, title: "Graphic Design", price: "$16.48" },
+  { id: 5, image: product5, title: "Graphic Design", price: "$16.48" },
+  { id: 6, image: product6, title: "Graphic Design", price: "$16.48" },
+  { id: 7, image: product7, title: "Graphic Design", price: "$16.48" },
+  { id: 8, image: product8, title: "Graphic Design", price: "$16.48" },
+  { id: 9, image: product9, title: "Graphic Design", price: "$16.48" },
+  { id: 10, image: product10, title: "Graphic Design", price: "$16.48" },
+  { id: 11, image: product11, title: "Graphic Design", price: "$16.48" },
+  { id: 12, image: product12, title: "Graphic Design", price: "$16.48" },
+];
 
 const categories = [
-  { id: 1, title: "CLOTHS", image: "https://picsum.photos/400/250?31" },
-  { id: 2, title: "CLOTHS", image: "https://picsum.photos/400/250?32" },
-  { id: 3, title: "CLOTHS", image: "https://picsum.photos/400/250?33" },
-  { id: 4, title: "CLOTHS", image: "https://picsum.photos/400/250?34" },
-  { id: 5, title: "CLOTHS", image: "https://picsum.photos/400/250?35" },
+  { id: 1, title: "CLOTHS", image: category1 },
+  { id: 2, title: "CLOTHS", image: category2 },
+  { id: 3, title: "CLOTHS", image: category3 },
+  { id: 4, title: "CLOTHS", image: category4 },
+  { id: 5, title: "CLOTHS", image: category5 },
 ];
 
 function ShopPage() {
@@ -54,7 +79,7 @@ function ShopPage() {
                   className="w-full h-[220px] object-cover transition-transform duration-300 group-hover:scale-105"
                 />
 
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center text-white">
+                <div className="absolute inset-0 bg-black/40 opacity-100 transition flex flex-col items-center justify-center text-white group-hover:bg-black/50">
                   <span className="text-sm font-semibold tracking-wide">
                     {cat.title}
                   </span>

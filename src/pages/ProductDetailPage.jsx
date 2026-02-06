@@ -13,25 +13,93 @@ import stripe from "../assets/brands/stripe.png";
 import aws from "../assets/brands/aws.png";
 import reddit from "../assets/brands/reddit.png";
 import digeri from "../assets/brands/digeri.png";
+import detail1 from "../assets/productdetail/1.png";
+import detail2 from "../assets/productdetail/2.png";
+import detail3 from "../assets/productdetail/3.png";
+import detail4 from "../assets/productdetail/4.png";
+import detail5 from "../assets/productdetail/5.png";
+import detail6 from "../assets/productdetail/6.png";
+import detail7 from "../assets/productdetail/7.png";
+import detail8 from "../assets/productdetail/8.png";
+import detailHead from "../assets/productdetail/head.jpg";
+import detailThumb1 from "../assets/productdetail/thumbnail1.jpg";
+import detailThumb2 from "../assets/productdetail/thumbnail2.png";
 
-const images = [
-  "https://picsum.photos/600/600?1",
-  "https://picsum.photos/600/600?2",
-  "https://picsum.photos/600/600?3",
+const images = [detailThumb1, detailHead];
+
+const thumbnails = [detailThumb1, detailHead];
+
+const bestsellerProducts = [
+  {
+    id: 1,
+    image: detail1,
+    title: "Graphic Design",
+    price: "$6.48",
+    oldPrice: "$16.48",
+    colors: ["#23A6F0", "#23856D", "#E77C40", "#252B42"],
+  },
+  {
+    id: 2,
+    image: detail2,
+    title: "Graphic Design",
+    price: "$6.48",
+    oldPrice: "$16.48",
+    colors: ["#23A6F0", "#23856D", "#E77C40", "#252B42"],
+  },
+  {
+    id: 3,
+    image: detail3,
+    title: "Graphic Design",
+    price: "$6.48",
+    oldPrice: "$16.48",
+    colors: ["#23A6F0", "#23856D", "#E77C40", "#252B42"],
+  },
+  {
+    id: 4,
+    image: detail4,
+    title: "Graphic Design",
+    price: "$6.48",
+    oldPrice: "$16.48",
+    colors: ["#23A6F0", "#23856D", "#E77C40", "#252B42"],
+  },
+  {
+    id: 5,
+    image: detail5,
+    title: "Graphic Design",
+    price: "$6.48",
+    oldPrice: "$16.48",
+    colors: ["#23A6F0", "#23856D", "#E77C40", "#252B42"],
+  },
+  {
+    id: 6,
+    image: detail6,
+    title: "Graphic Design",
+    price: "$6.48",
+    oldPrice: "$16.48",
+    colors: ["#23A6F0", "#23856D", "#E77C40", "#252B42"],
+  },
+  {
+    id: 7,
+    image: detail7,
+    title: "Graphic Design",
+    price: "$6.48",
+    oldPrice: "$16.48",
+    colors: ["#23A6F0", "#23856D", "#E77C40", "#252B42"],
+  },
+  {
+    id: 8,
+    image: detail8,
+    title: "Graphic Design",
+    price: "$6.48",
+    oldPrice: "$16.48",
+    colors: ["#23A6F0", "#23856D", "#E77C40", "#252B42"],
+  },
 ];
-
-const bestsellerProducts = Array.from({ length: 8 }, (_, i) => ({
-  id: i + 1,
-  image: `https://picsum.photos/400/500?best=${i}`,
-  title: "Graphic Design",
-  price: "$6.48",
-  oldPrice: "$16.48",
-  colors: ["#23A6F0", "#23856D", "#E77C40", "#252B42"],
-}));
 
 export default function ProductDetailPage() {
   const [activeTab, setActiveTab] = useState("description");
   const swiperRef = useRef(null);
+  const [activeSlide, setActiveSlide] = useState(1);
 
   return (
     <div className="flex flex-col">
@@ -53,6 +121,8 @@ export default function ProductDetailPage() {
               modules={[Navigation]}
               navigation
               onSwiper={(swiper) => (swiperRef.current = swiper)}
+              onSlideChange={(swiper) => setActiveSlide(swiper.realIndex)}
+              initialSlide={1}
               className="w-full"
             >
               {images.map((img, i) => (
@@ -68,16 +138,22 @@ export default function ProductDetailPage() {
 
             {/* THUMBNAILS */}
             <div className="flex gap-4 mt-4">
-              {images.map((img, i) => (
+              {thumbnails.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => swiperRef.current?.slideTo(i)}
-                  className="border rounded-md overflow-hidden"
+                  className={`border rounded-md overflow-hidden ${
+                    activeSlide === i
+                      ? "border-[#23A6F0] ring-2 ring-[#23A6F0]"
+                      : "border-gray-200"
+                  }`}
                 >
                   <img
                     src={img}
                     alt={`thumb-${i}`}
-                    className="w-20 h-20 object-cover"
+                    className={`w-20 h-20 object-cover ${
+                      activeSlide === i ? "opacity-70 blur-[0.5px]" : ""
+                    }`}
                   />
                 </button>
               ))}
@@ -111,8 +187,10 @@ export default function ProductDetailPage() {
             {/* COLORS */}
             <div className="flex gap-3">
               {["#23A6F0", "#23856D", "#E77C40", "#252B42"].map((c, i) => (
-                <span
+                <button
                   key={i}
+                  type="button"
+                  onClick={(event) => event.preventDefault()}
                   className="w-6 h-6 rounded-full"
                   style={{ backgroundColor: c }}
                 />
@@ -153,8 +231,8 @@ export default function ProductDetailPage() {
               {tab === "description"
                 ? "Description"
                 : tab === "additional"
-                ? "Additional Information"
-                : "Reviews (0)"}
+                  ? "Additional Information"
+                  : "Reviews (0)"}
             </button>
           ))}
         </div>
@@ -162,7 +240,7 @@ export default function ProductDetailPage() {
         {activeTab === "description" && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-12">
             <img
-              src="https://picsum.photos/500/600?interior"
+              src={detailThumb2}
               className="w-full object-cover rounded-lg"
             />
 
