@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const api = axios.create({
-  baseURL: "https://workintech-fe-ecommerce.onrender.com",
-});
+import api from "../api/axiosInstance";
+import { fetchRolesIfNeeded } from "../store/thunks/clientThunks";
 
 const passwordPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
@@ -15,8 +13,10 @@ const turkishPhonePattern = /^(?:\+90|0)?\s?5\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$/;
 const taxNoPattern = /^T\d{4}V\d{6}$/;
 
 function SignupPage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [roles, setRoles] = useState([]);
+  const roles = useSelector((state) => state.client.roles);
+
   const [loadingRoles, setLoadingRoles] = useState(true);
   const [submitError, setSubmitError] = useState("");
 
@@ -42,61 +42,73 @@ function SignupPage() {
 
   const isStoreRole = useMemo(() => {
     if (!selectedRole) return false;
+    const roleId = Number(selectedRoleId);
     const code = String(selectedRole.code || "").toLowerCase();
     const name = String(selectedRole.name || "").toLowerCase();
     return (
-      code === "store" || name.includes("store") || name.includes("mağaza")
+      roleId === 2 ||
+      code === "store" ||
+      name.includes("store") ||
+      name.includes("magaza") ||
+      name.includes("mağaza")
     );
-  }, [selectedRole]);
+  }, [selectedRole, selectedRoleId]);
 
   useEffect(() => {
-    let isMounted = true;
+    let isActive = true;
 
-    const fetchRoles = async () => {
+    const loadRoles = async () => {
       try {
-        const response = await api.get("/roles");
-        if (!isMounted) return;
-        const list = Array.isArray(response.data) ? response.data : [];
-        const customerRole =
-          list.find((role) => String(role.code).toLowerCase() === "customer") ||
-          list.find((role) =>
-            String(role.name).toLowerCase().includes("customer"),
-          );
-
-        const orderedList = customerRole
-          ? [
-              customerRole,
-              ...list.filter((role) => role.id !== customerRole.id),
-            ]
-          : list;
-
-        setRoles(orderedList);
-
-        const defaultRole = customerRole || orderedList[0];
-
-        if (defaultRole) {
-          setValue("role_id", defaultRole.id, { shouldValidate: true });
-        }
+        await dispatch(fetchRolesIfNeeded());
       } catch (error) {
         const message =
           error?.response?.data?.message || "Roles could not be loaded.";
         setSubmitError(message);
         toast.error(message);
       } finally {
-        if (isMounted) {
+        if (isActive) {
           setLoadingRoles(false);
         }
       }
     };
 
-    fetchRoles();
+    loadRoles();
     return () => {
-      isMounted = false;
+      isActive = false;
     };
-  }, [setValue]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!roles.length) return;
+
+    const customerRole =
+      roles.find((role) => String(role.code || "").toLowerCase() === "customer") ||
+      roles.find((role) =>
+        String(role.name || "").toLowerCase().includes("customer"),
+      );
+
+    const defaultRole = customerRole || roles[0];
+
+    if (defaultRole && !selectedRoleId) {
+      setValue("role_id", defaultRole.id, { shouldValidate: true });
+    }
+  }, [roles, selectedRoleId, setValue]);
 
   const onSubmit = async (formData) => {
     setSubmitError("");
+    const submittedRole = roles.find(
+      (role) => String(role.id) === String(formData.role_id),
+    );
+    const submittedRoleId = Number(formData.role_id);
+    const submittedRoleCode = String(submittedRole?.code || "").toLowerCase();
+    const submittedRoleName = String(submittedRole?.name || "").toLowerCase();
+    const submittedIsStoreRole =
+      submittedRoleId === 2 ||
+      submittedRoleCode === "store" ||
+      submittedRoleName.includes("store") ||
+      submittedRoleName.includes("magaza") ||
+      submittedRoleName.includes("mağaza");
+
     const payload = {
       name: formData.name,
       email: formData.email,
@@ -104,7 +116,7 @@ function SignupPage() {
       role_id: Number(formData.role_id),
     };
 
-    if (isStoreRole) {
+    if (submittedIsStoreRole) {
       payload.store = {
         name: formData.store_name,
         phone: formData.store_phone,
@@ -157,9 +169,7 @@ function SignupPage() {
           </div>
 
           <div>
-            <label className="text-sm font-semibold text-[#252B42]">
-              Email
-            </label>
+            <label className="text-sm font-semibold text-[#252B42]">Email</label>
             <input
               className="mt-2 w-full border px-3 py-2 text-sm"
               type="email"
@@ -279,7 +289,7 @@ function SignupPage() {
                     required: "Store phone is required",
                     pattern: {
                       value: turkishPhonePattern,
-                      message: "Enter a valid Türkiye phone number",
+                      message: "Enter a valid Turkiye phone number",
                     },
                   })}
                 />
@@ -338,6 +348,12 @@ function SignupPage() {
                 )}
               </div>
             </div>
+          )}
+
+          {submitError && (
+            <p className="text-sm text-red-500" role="alert">
+              {submitError}
+            </p>
           )}
 
           <button
