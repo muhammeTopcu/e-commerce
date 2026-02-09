@@ -16,7 +16,7 @@ function HeroSlider() {
       >
         <SwiperSlide>
           <div
-            className="h-[400px] md:h-[700px] bg-cover bg-center"
+            className="h-[480px] md:h-[1000px] bg-cover bg-center"
             style={{ backgroundImage: `url(${heroImage})` }}
           >
             <div className="max-w-6xl mx-auto px-6 w-full h-full flex items-center md:grid md:grid-cols-2">
@@ -55,7 +55,7 @@ function HeroSlider() {
 
         <SwiperSlide>
           <div
-            className="h-[400px] md:h-[700px] bg-cover bg-center"
+            className="h-[480px] md:h-[1000px] bg-cover bg-center"
             style={{ backgroundImage: `url(${heroImage})` }}
           >
             <div className="max-w-6xl mx-auto px-6 w-full h-full flex items-center md:grid md:grid-cols-2">

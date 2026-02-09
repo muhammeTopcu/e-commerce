@@ -145,9 +145,15 @@ function HomePage() {
       {/* Bestseller Products */}
       <section className="mt-16">
         <div className="max-w-6xl mx-auto px-0 md:px-4">
-          <h2 className="text-lg font-semibold text-center mb-8">
+          <span className="block text-center text-sm text-gray-500  mb-2">
+            Featured Products
+          </span>
+          <h2 className="text-lg font-semibold text-center mb-2">
             BESTSELLER PRODUCTS
           </h2>
+          <p className="text-sm text-center text-gray-500 mb-8">
+            Problems trying to resolve the conflict between
+          </p>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (

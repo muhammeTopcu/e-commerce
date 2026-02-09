@@ -18,11 +18,11 @@ import product9 from "../assets/product/9.png";
 import product10 from "../assets/product/10.png";
 import product11 from "../assets/product/11.png";
 import product12 from "../assets/product/12.png";
-import category1 from "../assets/shoppagecategories/1.png";
-import category2 from "../assets/shoppagecategories/2.png";
-import category3 from "../assets/shoppagecategories/3.png";
-import category4 from "../assets/shoppagecategories/4.png";
-import category5 from "../assets/shoppagecategories/5.png";
+import category1 from "../assets/shopPageCategories/1.png";
+import category2 from "../assets/shopPageCategories/2.png";
+import category3 from "../assets/shopPageCategories/3.png";
+import category4 from "../assets/shopPageCategories/4.png";
+import category5 from "../assets/shopPageCategories/5.png";
 
 const products = [
   { id: 1, image: product1, title: "Graphic Design", price: "$16.48" },
