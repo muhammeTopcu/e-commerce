@@ -100,3 +100,4 @@ function VitaSlider() {
 }
 
 export default VitaSlider;
+

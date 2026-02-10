@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Gravatar from "react-gravatar";
 import {
   Facebook,
   Instagram,
@@ -14,6 +16,10 @@ import {
 
 function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+  const user = useSelector((state) => state.client.user);
+  const userEmail = user?.email;
+  const userName = user?.name || user?.fullName || "User";
 
   return (
     <header className="w-full relative bg-white">
@@ -99,9 +105,25 @@ function Header() {
           <div className="flex items-center gap-4 text-blue-500">
             {/* DESKTOP ICONS */}
             <div className="hidden md:flex items-center gap-2">
-              <Link to="/login">Login</Link>
-              <span>/</span>
-              <Link to="/signup">Register</Link>
+              {userEmail ? (
+                <div className="flex items-center gap-2 text-gray-700">
+                  <Gravatar
+                    email={userEmail}
+                    size={28}
+                    default="identicon"
+                    className="rounded-full"
+                  />
+                  <span className="text-sm font-medium">{userName}</span>
+                </div>
+              ) : (
+                <>
+                  <Link to="/login" state={{ from: location.pathname }}>
+                    Login
+                  </Link>
+                  <span>/</span>
+                  <Link to="/signup">Register</Link>
+                </>
+              )}
               <Search size={18} />
               <ShoppingCart size={18} />
               <Heart size={18} />
@@ -146,9 +168,25 @@ function Header() {
           {/* LOGIN */}
           <div className="flex items-center justify-center gap-2 pb-6 text-blue-500">
             <User size={18} />
-            <Link to="/login">Login</Link>
-            <span>/</span>
-            <Link to="/signup">Register</Link>
+            {userEmail ? (
+              <div className="flex items-center gap-2 text-gray-700">
+                <Gravatar
+                  email={userEmail}
+                  size={24}
+                  default="identicon"
+                  className="rounded-full"
+                />
+                <span className="text-sm font-medium">{userName}</span>
+              </div>
+            ) : (
+              <>
+                <Link to="/login" state={{ from: location.pathname }}>
+                  Login
+                </Link>
+                <span>/</span>
+                <Link to="/signup">Register</Link>
+              </>
+            )}
           </div>
 
           {/* ICONS */}
