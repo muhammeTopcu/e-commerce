@@ -1,4 +1,6 @@
 import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import PageContent from "./layout/PageContent";
 import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
@@ -8,8 +10,17 @@ import TeamPage from "./pages/TeamPage";
 import AboutPage from "./pages/AboutPage";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
+import { verifyStoredToken } from "./store/thunks/authThunks";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(verifyStoredToken()).catch(() => {
+      // Failed token verification is handled in thunk by clearing auth data.
+    });
+  }, [dispatch]);
+
   return (
     <PageContent>
       <Routes>
