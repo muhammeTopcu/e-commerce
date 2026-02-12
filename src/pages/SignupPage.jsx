@@ -12,6 +12,22 @@ const passwordPattern =
 const turkishPhonePattern = /^(?:\+90|0)?\s?5\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$/;
 const taxNoPattern = /^T\d{4}V\d{6}$/;
 
+const isStoreRoleByRole = (role) => {
+  if (!role) return false;
+
+  const roleId = Number(role.id);
+  const code = String(role.code || "").toLowerCase();
+  const name = String(role.name || "").toLowerCase();
+
+  return (
+    roleId === 2 ||
+    code === "store" ||
+    name.includes("store") ||
+    name.includes("magaza") ||
+    name.includes("mağaza")
+  );
+};
+
 function SignupPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,19 +56,10 @@ function SignupPage() {
     [roles, selectedRoleId],
   );
 
-  const isStoreRole = useMemo(() => {
-    if (!selectedRole) return false;
-    const roleId = Number(selectedRoleId);
-    const code = String(selectedRole.code || "").toLowerCase();
-    const name = String(selectedRole.name || "").toLowerCase();
-    return (
-      roleId === 2 ||
-      code === "store" ||
-      name.includes("store") ||
-      name.includes("magaza") ||
-      name.includes("mağaza")
-    );
-  }, [selectedRole, selectedRoleId]);
+  const isStoreRole = useMemo(
+    () => isStoreRoleByRole(selectedRole),
+    [selectedRole],
+  );
 
   useEffect(() => {
     let isActive = true;
@@ -99,15 +106,7 @@ function SignupPage() {
     const submittedRole = roles.find(
       (role) => String(role.id) === String(formData.role_id),
     );
-    const submittedRoleId = Number(formData.role_id);
-    const submittedRoleCode = String(submittedRole?.code || "").toLowerCase();
-    const submittedRoleName = String(submittedRole?.name || "").toLowerCase();
-    const submittedIsStoreRole =
-      submittedRoleId === 2 ||
-      submittedRoleCode === "store" ||
-      submittedRoleName.includes("store") ||
-      submittedRoleName.includes("magaza") ||
-      submittedRoleName.includes("mağaza");
+    const submittedIsStoreRole = isStoreRoleByRole(submittedRole);
 
     const payload = {
       name: formData.name,

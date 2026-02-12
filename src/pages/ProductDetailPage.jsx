@@ -241,6 +241,7 @@ export default function ProductDetailPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-12">
             <img
               src={detailThumb2}
+              alt="Product description visual"
               className="w-full object-cover rounded-lg"
             />
 
@@ -290,12 +291,12 @@ export default function ProductDetailPage() {
       {/* BRANDS */}
       <section className="py-8">
         <div className="max-w-6xl mx-auto py-8 flex flex-col md:flex-row justify-between items-center gap-10">
-          <img src={hooli} className="h-10 opacity-60" />
-          <img src={lyft} className="h-10 opacity-60" />
-          <img src={digeri} className="h-10 opacity-60" />
-          <img src={stripe} className="h-10 opacity-60" />
-          <img src={aws} className="h-10 opacity-60" />
-          <img src={reddit} className="h-10 opacity-60" />
+          <img src={hooli} alt="Hooli" className="h-10 opacity-60" />
+          <img src={lyft} alt="Lyft" className="h-10 opacity-60" />
+          <img src={digeri} alt="Brand" className="h-10 opacity-60" />
+          <img src={stripe} alt="Stripe" className="h-10 opacity-60" />
+          <img src={aws} alt="AWS" className="h-10 opacity-60" />
+          <img src={reddit} alt="Reddit" className="h-10 opacity-60" />
         </div>
       </section>
     </div>

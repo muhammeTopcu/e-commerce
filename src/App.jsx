@@ -11,6 +11,7 @@ import AboutPage from "./pages/AboutPage";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import { verifyStoredToken } from "./store/thunks/authThunks";
+import { fetchCategoriesIfNeeded } from "./store/thunks/productThunks";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +20,9 @@ function App() {
     dispatch(verifyStoredToken()).catch(() => {
       // Failed token verification is handled in thunk by clearing auth data.
     });
+    dispatch(fetchCategoriesIfNeeded()).catch((error) => {
+      console.error("Failed to fetch categories:", error);
+    });
   }, [dispatch]);
 
   return (
@@ -26,6 +30,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />
+        <Route path="/shop/:gender/:categoryName/:categoryId" element={<ShopPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/product/:id" element={<ProductDetailPage />} />
         <Route path="/contact" element={<ContactPage />} />

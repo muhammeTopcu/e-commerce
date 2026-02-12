@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Gravatar from "react-gravatar";
@@ -14,16 +14,45 @@ import {
   User,
 } from "lucide-react";
 
+const slugify = (value = "") =>
+  String(value).toLowerCase().trim().replace(/\s+/g, "-");
+
+const getCategoryGenderSlug = (category) => {
+  const gender = String(category?.gender || category?.gender_code || "k").toLowerCase();
+  return gender === "e" ? "erkek" : "kadin";
+};
+
+const categoryHref = (category) =>
+  `/shop/${getCategoryGenderSlug(category)}/${slugify(
+    category?.title || category?.name || "kategori",
+  )}/${category?.id}`;
+
 function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const user = useSelector((state) => state.client.user);
+  const categories = useSelector((state) => state.product.categories);
+
   const userEmail = user?.email;
   const userName = user?.name || user?.fullName || "User";
 
+  const groupedCategories = useMemo(() => {
+    const women = [];
+    const men = [];
+
+    categories.forEach((category) => {
+      if (getCategoryGenderSlug(category) === "erkek") {
+        men.push(category);
+      } else {
+        women.push(category);
+      }
+    });
+
+    return { women, men };
+  }, [categories]);
+
   return (
     <header className="w-full relative bg-white">
-      {/* TOP BAR – DESKTOP ONLY */}
       <div className="hidden md:block bg-[#23856D] text-white text-xs">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-4">
@@ -35,50 +64,72 @@ function Header() {
 
           <div className="flex items-center gap-2">
             <span className="mr-1">Follow Us :</span>
-            <a
-              href="#"
-              onClick={(event) => event.preventDefault()}
-              aria-label="Instagram"
-            >
+            <a href="#" onClick={(event) => event.preventDefault()} aria-label="Instagram">
               <Instagram size={14} />
             </a>
-            <a
-              href="#"
-              onClick={(event) => event.preventDefault()}
-              aria-label="YouTube"
-            >
+            <a href="#" onClick={(event) => event.preventDefault()} aria-label="YouTube">
               <Youtube size={14} />
             </a>
-            <a
-              href="#"
-              onClick={(event) => event.preventDefault()}
-              aria-label="Facebook"
-            >
+            <a href="#" onClick={(event) => event.preventDefault()} aria-label="Facebook">
               <Facebook size={14} />
             </a>
-            <a
-              href="#"
-              onClick={(event) => event.preventDefault()}
-              aria-label="Twitter"
-            >
+            <a href="#" onClick={(event) => event.preventDefault()} aria-label="Twitter">
               <Twitter size={14} />
             </a>
           </div>
         </div>
       </div>
 
-      {/* MAIN HEADER */}
       <div className="border-b">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-6">
-          {/* LOGO */}
           <h1 className="text-xl font-bold">
             <Link to="/">Bandage</Link>
           </h1>
 
-          {/* DESKTOP NAV */}
           <nav className="hidden md:flex gap-4 text-sm text-gray-600 relative">
             <Link to="/">Home</Link>
-            <Link to="/shop">Shop</Link>
+
+            <div className="relative group">
+              <Link to="/shop" className="flex items-center gap-1">
+                Shop
+                <span aria-hidden="true" className="text-xs leading-none">
+                  v
+                </span>
+              </Link>
+              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[520px] rounded-md border bg-white shadow-lg z-50 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition">
+                <div className="grid grid-cols-2 gap-8 p-6">
+                  <div>
+                    <h4 className="font-semibold text-[#252B42] mb-3">Kadin</h4>
+                    <div className="space-y-2">
+                      {groupedCategories.women.map((category) => (
+                        <Link
+                          key={`w-${category.id}`}
+                          to={categoryHref(category)}
+                          className="block text-sm text-gray-600 hover:text-[#23A6F0]"
+                        >
+                          {category.title || category.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-[#252B42] mb-3">Erkek</h4>
+                    <div className="space-y-2">
+                      {groupedCategories.men.map((category) => (
+                        <Link
+                          key={`m-${category.id}`}
+                          to={categoryHref(category)}
+                          className="block text-sm text-gray-600 hover:text-[#23A6F0]"
+                        >
+                          {category.title || category.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <Link to="/about">About</Link>
             <Link to="/blog">Blog</Link>
             <Link to="/contact">Contact</Link>
@@ -86,11 +137,10 @@ function Header() {
               <span className="flex items-center gap-1 cursor-pointer">
                 Pages
                 <span aria-hidden="true" className="text-xs leading-none">
-                  ▼
+                  v
                 </span>
               </span>
               <div className="absolute left-0 top-full mt-1 w-40 rounded-md border bg-white shadow-lg z-50 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition">
-                <span className="absolute -top-3 left-0 h-3 w-full" />
                 <Link
                   to="/team"
                   className="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
@@ -101,9 +151,7 @@ function Header() {
             </div>
           </nav>
 
-          {/* RIGHT */}
           <div className="flex items-center gap-4 text-blue-500">
-            {/* DESKTOP ICONS */}
             <div className="hidden md:flex items-center gap-2">
               {userEmail ? (
                 <div className="flex items-center gap-2 text-gray-700">
@@ -129,21 +177,15 @@ function Header() {
               <Heart size={18} />
             </div>
 
-            {/* MOBILE HAMBURGER */}
-            <button
-              className="md:hidden"
-              onClick={() => setMobileOpen((prev) => !prev)}
-            >
+            <button className="md:hidden" onClick={() => setMobileOpen((prev) => !prev)}>
               <Menu size={22} />
             </button>
           </div>
         </div>
       </div>
 
-      {/* MOBILE MENU*/}
       {mobileOpen && (
         <div className="w-full bg-white border-b">
-          {/* LINKS */}
           <div className="flex flex-col items-center gap-6 py-10 text-lg text-gray-600">
             <Link onClick={() => setMobileOpen(false)} to="/">
               Home
@@ -165,7 +207,6 @@ function Header() {
             </Link>
           </div>
 
-          {/* LOGIN */}
           <div className="flex items-center justify-center gap-2 pb-6 text-blue-500">
             <User size={18} />
             {userEmail ? (
@@ -189,7 +230,6 @@ function Header() {
             )}
           </div>
 
-          {/* ICONS */}
           <div className="flex justify-center gap-8 pb-8 text-blue-500">
             <Search size={22} />
             <ShoppingCart size={22} />
