@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Gravatar from "react-gravatar";
+import { clearAuthToken } from "../api/axiosInstance";
+import { setUser } from "../store/actions/clientActions";
 import {
   Facebook,
   Instagram,
@@ -18,7 +20,9 @@ const slugify = (value = "") =>
   String(value).toLowerCase().trim().replace(/\s+/g, "-");
 
 const getCategoryGenderSlug = (category) => {
-  const gender = String(category?.gender || category?.gender_code || "k").toLowerCase();
+  const gender = String(
+    category?.gender || category?.gender_code || "k",
+  ).toLowerCase();
   return gender === "e" ? "erkek" : "kadin";
 };
 
@@ -28,6 +32,8 @@ const categoryHref = (category) =>
   )}/${category?.id}`;
 
 function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const user = useSelector((state) => state.client.user);
@@ -51,6 +57,14 @@ function Header() {
     return { women, men };
   }, [categories]);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    clearAuthToken();
+    dispatch(setUser({}));
+    setMobileOpen(false);
+    navigate("/");
+  };
+
   return (
     <header className="w-full relative bg-white">
       <div className="hidden md:block bg-[#23856D] text-white text-xs">
@@ -64,16 +78,32 @@ function Header() {
 
           <div className="flex items-center gap-2">
             <span className="mr-1">Follow Us :</span>
-            <a href="#" onClick={(event) => event.preventDefault()} aria-label="Instagram">
+            <a
+              href="#"
+              onClick={(event) => event.preventDefault()}
+              aria-label="Instagram"
+            >
               <Instagram size={14} />
             </a>
-            <a href="#" onClick={(event) => event.preventDefault()} aria-label="YouTube">
+            <a
+              href="#"
+              onClick={(event) => event.preventDefault()}
+              aria-label="YouTube"
+            >
               <Youtube size={14} />
             </a>
-            <a href="#" onClick={(event) => event.preventDefault()} aria-label="Facebook">
+            <a
+              href="#"
+              onClick={(event) => event.preventDefault()}
+              aria-label="Facebook"
+            >
               <Facebook size={14} />
             </a>
-            <a href="#" onClick={(event) => event.preventDefault()} aria-label="Twitter">
+            <a
+              href="#"
+              onClick={(event) => event.preventDefault()}
+              aria-label="Twitter"
+            >
               <Twitter size={14} />
             </a>
           </div>
@@ -140,13 +170,15 @@ function Header() {
                   v
                 </span>
               </span>
-              <div className="absolute left-0 top-full mt-1 w-40 rounded-md border bg-white shadow-lg z-50 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition">
-                <Link
-                  to="/team"
-                  className="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
-                >
-                  Team
-                </Link>
+              <div className="absolute left-0 top-full pt-2 w-40 z-50 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition">
+                <div className="rounded-md border bg-white shadow-lg">
+                  <Link
+                    to="/team"
+                    className="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
+                  >
+                    Team
+                  </Link>
+                </div>
               </div>
             </div>
           </nav>
@@ -162,6 +194,13 @@ function Header() {
                     className="rounded-full"
                   />
                   <span className="text-sm font-medium">{userName}</span>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="text-xs text-blue-500 hover:text-red-600"
+                  >
+                    Logout
+                  </button>
                 </div>
               ) : (
                 <>
@@ -177,7 +216,10 @@ function Header() {
               <Heart size={18} />
             </div>
 
-            <button className="md:hidden" onClick={() => setMobileOpen((prev) => !prev)}>
+            <button
+              className="md:hidden"
+              onClick={() => setMobileOpen((prev) => !prev)}
+            >
               <Menu size={22} />
             </button>
           </div>
@@ -218,6 +260,13 @@ function Header() {
                   className="rounded-full"
                 />
                 <span className="text-sm font-medium">{userName}</span>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="text-xs text-red-500 hover:text-red-600"
+                >
+                  Logout
+                </button>
               </div>
             ) : (
               <>

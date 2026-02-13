@@ -1,7 +1,13 @@
 import api from "../../api/axiosInstance";
-import { setCategories, setFetchState } from "../actions/productActions";
+import {
+  setCategories,
+  setFetchState,
+  setProductList,
+  setTotal,
+} from "../actions/productActions";
 
 let categoriesPromise = null;
+let productsPromise = null;
 
 export const fetchCategoriesIfNeeded = () => async (dispatch, getState) => {
   const { product } = getState();
@@ -33,4 +39,51 @@ export const fetchCategoriesIfNeeded = () => async (dispatch, getState) => {
     });
 
   return categoriesPromise;
+};
+
+export const fetchProducts = (options = {}) => async (dispatch, getState) => {
+  const { product } = getState();
+  const {
+    categoryId,
+    limit = product.limit,
+    offset = product.offset,
+    filter = product.filter,
+  } = options;
+
+  if (productsPromise) {
+    return productsPromise;
+  }
+
+  dispatch(setFetchState("FETCHING"));
+
+  const params = new URLSearchParams();
+  if (limit !== undefined && limit !== null) params.set("limit", String(limit));
+  if (offset !== undefined && offset !== null) params.set("offset", String(offset));
+  if (filter) params.set("filter", String(filter));
+  if (categoryId) params.set("category", String(categoryId));
+
+  const url = params.toString() ? `/products?${params.toString()}` : "/products";
+
+  productsPromise = api
+    .get(url)
+    .then((response) => {
+      const data = response.data || {};
+      const products = Array.isArray(data.products) ? data.products : [];
+      const total = Number(data.total) || 0;
+
+      dispatch(setProductList(products));
+      dispatch(setTotal(total));
+      dispatch(setFetchState("FETCHED"));
+
+      return data;
+    })
+    .catch((error) => {
+      dispatch(setFetchState("FAILED"));
+      throw error;
+    })
+    .finally(() => {
+      productsPromise = null;
+    });
+
+  return productsPromise;
 };
