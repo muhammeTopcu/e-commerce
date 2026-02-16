@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../components/ProductCard";
@@ -15,12 +15,15 @@ import category4 from "../assets/shopPageCategories/4.png";
 import category5 from "../assets/shopPageCategories/5.png";
 import productPlaceholder from "../assets/product/1.png";
 import { fetchProducts } from "../store/thunks/productThunks";
+import { setFilter, setSort } from "../store/actions/productActions";
 
 const slugify = (value = "") =>
   String(value).toLowerCase().trim().replace(/\s+/g, "-");
 
 const getCategoryGenderSlug = (category) => {
-  const gender = String(category?.gender || category?.gender_code || "k").toLowerCase();
+  const gender = String(
+    category?.gender || category?.gender_code || "k",
+  ).toLowerCase();
   return gender === "e" ? "erkek" : "kadin";
 };
 
@@ -29,7 +32,13 @@ const categoryHref = (category) =>
     category?.title || category?.name || "kategori",
   )}/${category?.id}`;
 
-const fallbackCategoryImages = [category1, category2, category3, category4, category5];
+const fallbackCategoryImages = [
+  category1,
+  category2,
+  category3,
+  category4,
+  category5,
+];
 
 const getProductImage = (product) => {
   if (Array.isArray(product?.images) && product.images.length > 0) {
@@ -63,8 +72,19 @@ const getProductImage = (product) => {
 function ShopPage() {
   const dispatch = useDispatch();
   const { gender, categoryName, categoryId } = useParams();
-  const { categories, productList, total, fetchState, limit, offset, filter } =
+  const { categories, productList, fetchState, limit, offset, filter, sort } =
     useSelector((state) => state.product);
+
+  const [filterInput, setFilterInput] = useState(filter || "");
+  const [sortInput, setSortInput] = useState(sort || "");
+
+  useEffect(() => {
+    setFilterInput(filter || "");
+  }, [filter]);
+
+  useEffect(() => {
+    setSortInput(sort || "");
+  }, [sort]);
 
   useEffect(() => {
     dispatch(
@@ -73,11 +93,17 @@ function ShopPage() {
         limit,
         offset,
         filter,
+        sort,
       }),
     ).catch((error) => {
       console.error("Failed to fetch products:", error);
     });
-  }, [dispatch, categoryId, limit, offset, filter]);
+  }, [dispatch, categoryId, limit, offset, filter, sort]);
+
+  const handleApplyFilters = () => {
+    dispatch(setFilter(filterInput.trim()));
+    dispatch(setSort(sortInput));
+  };
 
   const selectedCategoryLabel = categoryName
     ? `${gender || ""} / ${categoryName} / ${categoryId || ""}`
@@ -108,7 +134,6 @@ function ShopPage() {
       <section>
         <div className="max-w-6xl mx-auto px-0 md:px-4 py-6 flex items-center justify-between">
           <h1 className="text-xl font-bold text-[#252B42]">Shop</h1>
-
           <div className="text-sm text-gray-500">
             <span className="text-[#252B42]">Home</span>
             <span className="mx-2">{">"}</span>
@@ -131,7 +156,6 @@ function ShopPage() {
                   alt={cat.title || cat.name}
                   className="w-full h-[220px] object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-
                 <div className="absolute inset-0 bg-black/40 opacity-100 transition flex flex-col items-center justify-center text-white group-hover:bg-black/50">
                   <span className="text-sm font-semibold tracking-wide">
                     {(cat.title || cat.name || "CLOTHS").toUpperCase()}
@@ -151,7 +175,9 @@ function ShopPage() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h4 className="text-sm font-semibold text-[#252B42] mb-2">Kadin</h4>
+              <h4 className="text-sm font-semibold text-[#252B42] mb-2">
+                Kadin
+              </h4>
               <div className="flex flex-wrap gap-2">
                 {womenCategories.map((category) => (
                   <Link
@@ -165,7 +191,9 @@ function ShopPage() {
               </div>
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-[#252B42] mb-2">Erkek</h4>
+              <h4 className="text-sm font-semibold text-[#252B42] mb-2">
+                Erkek
+              </h4>
               <div className="flex flex-wrap gap-2">
                 {menCategories.map((category) => (
                   <Link
@@ -183,27 +211,58 @@ function ShopPage() {
       </section>
 
       <section className="border-b mt-6">
-        <div className="max-w-6xl mx-auto px-0 md:px-4 py-6 flex items-center justify-between text-sm">
-          <span className="text-gray-600">Showing {total || productList.length} results</span>
+        <div className="max-w-6xl mx-auto px-0 md:px-4 py-6 md:py-8">
+          <div className="max-w-6xl mx-auto px-0 md:px-4 py-6 flex items-center justify-between text-sm">
+            <span className="text-[#BDBDBD] text-base text-xs">
+              Showing all {productList.length} results
+            </span>
 
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500">View:</span>
-              <button className="w-8 h-8 border flex items-center justify-center">
-                []
+            <div className="flex items-center gap-3">
+              <span className="text-[#BDBDBD] font-semibold">Views:</span>
+              <button
+                type="button"
+                className="h-8 px-3 border border-[#E6E6E6] text-xs text-[#252B73] hover:border-[#23A6F0] hover:text-[#23A6F0] transition"
+              >
+                Kart
               </button>
-              <button className="w-8 h-8 border flex items-center justify-center">
-                =
+              <button
+                type="button"
+                className="h-8 px-3 border border-[#E6E6E6] text-xs text-[#BDBDBD] hover:border-[#23A6F0] hover:text-[#23A6F0] transition"
+              >
+                Liste
               </button>
             </div>
 
-            <select className="border px-3 py-2 text-sm">
-              <option>Popularity</option>
-            </select>
+            <div className="flex items-center gap-3 md:gap-4">
+              <input
+                type="text"
+                value={filterInput}
+                onChange={(event) => setFilterInput(event.target.value)}
+                placeholder="Filter products"
+                className="h-11 w-[160px] md:w-[220px] border border-[#E6E6E6] px-3 text-sm text-[#737373] focus:outline-none"
+              />
 
-            <button className="bg-[#23A6F0] text-white px-4 py-2 text-sm">
-              Filter
-            </button>
+              <select
+                value={sortInput}
+                onChange={(event) => setSortInput(event.target.value)}
+                className="h-11 min-w-[170px] border border-[#E6E6E6] px-3 text-sm text-[#BDBDBD] focus:outline-none"
+              >
+                <option value="">Popularity</option>
+                <option value="price:asc">price:asc</option>
+                <option value="price:desc">price:desc</option>
+                <option value="rating:asc">rating:asc</option>
+                <option value="rating:desc">rating:desc</option>
+              </select>
+
+              <button
+                type="button"
+                onClick={handleApplyFilters}
+                className="h-11 px-8 text-white text-sm font-semibold rounded-md"
+                style={{ backgroundColor: "#33A0E5" }}
+              >
+                Filter
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -235,7 +294,9 @@ function ShopPage() {
                     title={product.name || product.title || "Product"}
                     subtitle={product.category?.name || "English Department"}
                     price={`$${product.price ?? "0.00"}`}
-                    oldPrice={product.oldPrice ? `$${product.oldPrice}` : undefined}
+                    oldPrice={
+                      product.oldPrice ? `$${product.oldPrice}` : undefined
+                    }
                     colors={["#23A6F0", "#23856D", "#E77C40", "#252B42"]}
                   />
                 </Link>

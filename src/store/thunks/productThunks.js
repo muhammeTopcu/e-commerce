@@ -7,7 +7,6 @@ import {
 } from "../actions/productActions";
 
 let categoriesPromise = null;
-let productsPromise = null;
 
 export const fetchCategoriesIfNeeded = () => async (dispatch, getState) => {
   const { product } = getState();
@@ -48,11 +47,8 @@ export const fetchProducts = (options = {}) => async (dispatch, getState) => {
     limit = product.limit,
     offset = product.offset,
     filter = product.filter,
+    sort = product.sort,
   } = options;
-
-  if (productsPromise) {
-    return productsPromise;
-  }
 
   dispatch(setFetchState("FETCHING"));
 
@@ -60,11 +56,12 @@ export const fetchProducts = (options = {}) => async (dispatch, getState) => {
   if (limit !== undefined && limit !== null) params.set("limit", String(limit));
   if (offset !== undefined && offset !== null) params.set("offset", String(offset));
   if (filter) params.set("filter", String(filter));
+  if (sort) params.set("sort", String(sort));
   if (categoryId) params.set("category", String(categoryId));
 
   const url = params.toString() ? `/products?${params.toString()}` : "/products";
 
-  productsPromise = api
+  return api
     .get(url)
     .then((response) => {
       const data = response.data || {};
@@ -80,10 +77,5 @@ export const fetchProducts = (options = {}) => async (dispatch, getState) => {
     .catch((error) => {
       dispatch(setFetchState("FAILED"));
       throw error;
-    })
-    .finally(() => {
-      productsPromise = null;
     });
-
-  return productsPromise;
 };
