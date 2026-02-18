@@ -15,7 +15,7 @@ import category4 from "../assets/shopPageCategories/4.png";
 import category5 from "../assets/shopPageCategories/5.png";
 import productPlaceholder from "../assets/product/1.png";
 import { fetchProducts } from "../store/thunks/productThunks";
-import { setFilter, setSort } from "../store/actions/productActions";
+import { setFilter, setOffset, setSort } from "../store/actions/productActions";
 
 const slugify = (value = "") =>
   String(value).toLowerCase().trim().replace(/\s+/g, "-");
@@ -72,8 +72,16 @@ const getProductImage = (product) => {
 function ShopPage() {
   const dispatch = useDispatch();
   const { gender, categoryName, categoryId } = useParams();
-  const { categories, productList, fetchState, limit, offset, filter, sort } =
-    useSelector((state) => state.product);
+  const {
+    categories,
+    productList,
+    total,
+    fetchState,
+    limit,
+    offset,
+    filter,
+    sort,
+  } = useSelector((state) => state.product);
 
   const [filterInput, setFilterInput] = useState(filter || "");
   const [sortInput, setSortInput] = useState(sort || "");
@@ -100,10 +108,30 @@ function ShopPage() {
     });
   }, [dispatch, categoryId, limit, offset, filter, sort]);
 
+  useEffect(() => {
+    dispatch(setOffset(0));
+  }, [dispatch, categoryId]);
+
   const handleApplyFilters = () => {
+    dispatch(setOffset(0));
     dispatch(setFilter(filterInput.trim()));
     dispatch(setSort(sortInput));
   };
+
+  const totalPages = Math.max(1, Math.ceil((total || 0) / limit));
+  const currentPage = Math.floor(offset / limit) + 1;
+
+  const handlePageChange = (page) => {
+    if (page < 1 || page > totalPages) return;
+    dispatch(setOffset((page - 1) * limit));
+  };
+
+  const visiblePages = [];
+  const startPage = Math.max(1, currentPage - 2);
+  const endPage = Math.min(totalPages, startPage + 4);
+  for (let page = startPage; page <= endPage; page += 1) {
+    visiblePages.push(page);
+  }
 
   const selectedCategoryLabel = categoryName
     ? `${gender || ""} / ${categoryName} / ${categoryId || ""}`
@@ -214,7 +242,7 @@ function ShopPage() {
         <div className="max-w-6xl mx-auto px-0 md:px-4 py-6 md:py-8">
           <div className="max-w-6xl mx-auto px-0 md:px-4 py-6 flex items-center justify-between text-sm">
             <span className="text-[#BDBDBD] text-base text-xs">
-              Showing all {productList.length} results
+              Showing all {total} results
             </span>
 
             <div className="flex items-center gap-3">
@@ -308,10 +336,38 @@ function ShopPage() {
 
       <section className="pb-8">
         <div className="flex justify-center items-center gap-2 text-sm">
-          <button className="px-3 py-2 border text-gray-400">Prev</button>
-          <button className="px-3 py-2 border bg-blue-500 text-white">1</button>
-          <button className="px-3 py-2 border text-gray-600">2</button>
-          <button className="px-3 py-2 border text-gray-600">Next</button>
+          <button
+            type="button"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-3 py-2 border text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+          >
+            Prev
+          </button>
+
+          {visiblePages.map((page) => (
+            <button
+              key={page}
+              type="button"
+              onClick={() => handlePageChange(page)}
+              className={`px-3 py-2 border ${
+                currentPage === page
+                  ? "bg-blue-500 text-white"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+
+          <button
+            type="button"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-3 py-2 border text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
         </div>
       </section>
 
