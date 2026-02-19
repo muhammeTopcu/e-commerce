@@ -32,6 +32,9 @@ const categoryHref = (category) =>
     category?.title || category?.name || "kategori",
   )}/${category?.id}`;
 
+const productHref = ({ product, gender, categoryName, categoryId }) =>
+  `/shop/${gender || "kadin"}/${categoryName || "kategori"}/${categoryId || product?.category_id || 0}/${slugify(product?.name || "product")}/${product?.id}`;
+
 const fallbackCategoryImages = [
   category1,
   category2,
@@ -85,14 +88,6 @@ function ShopPage() {
 
   const [filterInput, setFilterInput] = useState(filter || "");
   const [sortInput, setSortInput] = useState(sort || "");
-
-  useEffect(() => {
-    setFilterInput(filter || "");
-  }, [filter]);
-
-  useEffect(() => {
-    setSortInput(sort || "");
-  }, [sort]);
 
   useEffect(() => {
     dispatch(
@@ -314,7 +309,7 @@ function ShopPage() {
               {productList.map((product, index) => (
                 <Link
                   key={product.id || `${product.name}-${index}`}
-                  to={`/product/${product.id}`}
+                  to={productHref({ product, gender, categoryName, categoryId })}
                   className="block"
                 >
                   <ProductCard

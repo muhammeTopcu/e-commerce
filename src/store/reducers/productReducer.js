@@ -7,6 +7,8 @@ import {
   SET_OFFSET,
   SET_FILTER,
   SET_SORT,
+  SET_PRODUCT_DETAIL,
+  SET_PRODUCT_DETAIL_FETCH_STATE,
 } from "../actions/productActions";
 
 const initialState = {
@@ -18,6 +20,8 @@ const initialState = {
   filter: "",
   sort: "",
   fetchState: "NOT_FETCHED",
+  productDetail: null,
+  productDetailFetchState: "NOT_FETCHED",
 };
 
 export default function productReducer(state = initialState, action) {
@@ -38,6 +42,10 @@ export default function productReducer(state = initialState, action) {
       return { ...state, filter: action.payload };
     case SET_SORT:
       return { ...state, sort: action.payload };
+    case SET_PRODUCT_DETAIL:
+      return { ...state, productDetail: action.payload };
+    case SET_PRODUCT_DETAIL_FETCH_STATE:
+      return { ...state, productDetailFetchState: action.payload };
     default:
       return state;
   }

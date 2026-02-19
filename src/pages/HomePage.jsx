@@ -235,7 +235,7 @@ function HomePage() {
           </p>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {[featured1, featured2, featured3].map((image, index) => (
+            {[featured1, featured2, featured3].map((image) => (
               <div
                 key={image}
                 className="border rounded-lg overflow-hidden flex flex-col"

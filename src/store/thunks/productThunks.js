@@ -2,6 +2,8 @@ import api from "../../api/axiosInstance";
 import {
   setCategories,
   setFetchState,
+  setProductDetail,
+  setProductDetailFetchState,
   setProductList,
   setTotal,
 } from "../actions/productActions";
@@ -76,6 +78,26 @@ export const fetchProducts = (options = {}) => async (dispatch, getState) => {
     })
     .catch((error) => {
       dispatch(setFetchState("FAILED"));
+      throw error;
+    });
+};
+
+export const fetchProductById = (productId) => async (dispatch) => {
+  if (!productId) return null;
+
+  dispatch(setProductDetailFetchState("FETCHING"));
+
+  return api
+    .get(`/products/${productId}`)
+    .then((response) => {
+      const product = response?.data || null;
+      dispatch(setProductDetail(product));
+      dispatch(setProductDetailFetchState("FETCHED"));
+      return product;
+    })
+    .catch((error) => {
+      dispatch(setProductDetail(null));
+      dispatch(setProductDetailFetchState("FAILED"));
       throw error;
     });
 };
