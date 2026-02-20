@@ -31,13 +31,27 @@ const categoryHref = (category) =>
     category?.title || category?.name || "kategori",
   )}/${category?.id}`;
 
+const getCartImage = (product) => {
+  if (Array.isArray(product?.images) && product.images.length > 0) {
+    const firstImage = product.images[0];
+    if (typeof firstImage === "string") return firstImage;
+    if (firstImage?.url) return firstImage.url;
+  }
+  if (product?.image?.url) return product.image.url;
+  if (product?.image_url) return product.image_url;
+  if (product?.image) return product.image;
+  return "";
+};
+
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const location = useLocation();
   const user = useSelector((state) => state.client.user);
   const categories = useSelector((state) => state.product.categories);
+  const cart = useSelector((state) => state.shoppingCart.cart);
 
   const userEmail = user?.email;
   const userName = user?.name || user?.fullName || "User";
@@ -57,11 +71,17 @@ function Header() {
     return { women, men };
   }, [categories]);
 
+  const totalCartCount = useMemo(
+    () => cart.reduce((sum, item) => sum + Number(item?.count || 0), 0),
+    [cart],
+  );
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     clearAuthToken();
     dispatch(setUser({}));
     setMobileOpen(false);
+    setCartOpen(false);
     navigate("/");
   };
 
@@ -212,7 +232,60 @@ function Header() {
                 </>
               )}
               <Search size={18} />
-              <ShoppingCart size={18} />
+              <div className="relative">
+                <button
+                  type="button"
+                  className="relative text-blue-500"
+                  aria-label="Shopping cart"
+                  aria-expanded={cartOpen}
+                  onClick={() => setCartOpen((prev) => !prev)}
+                >
+                  <ShoppingCart size={18} />
+                  {totalCartCount > 0 && (
+                    <span className="absolute -top-2 -right-3 min-w-[18px] h-[18px] rounded-full bg-orange-500 text-white text-[10px] leading-[18px] text-center px-1">
+                      {totalCartCount}
+                    </span>
+                  )}
+                </button>
+                {cartOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-[360px] rounded-md border bg-white shadow-lg z-50">
+                    <div className="p-4 border-b">
+                      <h4 className="text-[#252B42] font-semibold">
+                        Sepetim ({totalCartCount} Urun)
+                      </h4>
+                    </div>
+                    <div className="max-h-[320px] overflow-y-auto">
+                      {cart.length === 0 ? (
+                        <p className="p-4 text-sm text-gray-500">Sepet bos.</p>
+                      ) : (
+                        cart.map((item) => (
+                          <div
+                            key={item.product.id}
+                            className="p-4 border-b flex gap-3 items-start"
+                          >
+                            <img
+                              src={getCartImage(item.product)}
+                              alt={item.product.name}
+                              className="w-16 h-16 object-cover rounded border"
+                            />
+                            <div className="flex-1">
+                              <p className="text-sm font-semibold text-[#252B42] line-clamp-2">
+                                {item.product.name}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-1">
+                                Adet: {item.count}
+                              </p>
+                              <p className="text-sm text-[#E77C40] font-semibold mt-1">
+                                ${item.product.price}
+                              </p>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
               <Heart size={18} />
             </div>
 
@@ -281,9 +354,62 @@ function Header() {
 
           <div className="flex justify-center gap-8 pb-8 text-blue-500">
             <Search size={22} />
-            <ShoppingCart size={22} />
+            <button
+              type="button"
+              className="relative"
+              aria-expanded={cartOpen}
+              onClick={() => setCartOpen((prev) => !prev)}
+            >
+              <ShoppingCart size={22} />
+              {totalCartCount > 0 && (
+                <span className="absolute -top-2 -right-3 min-w-[18px] h-[18px] rounded-full bg-orange-500 text-white text-[10px] leading-[18px] text-center px-1">
+                  {totalCartCount}
+                </span>
+              )}
+            </button>
             <Heart size={22} />
           </div>
+
+          {cartOpen && (
+            <div className="px-4 pb-8">
+              <div className="mx-auto max-w-md rounded-md border bg-white">
+                <div className="p-4 border-b">
+                  <h4 className="text-[#252B42] font-semibold">
+                    Sepetim ({totalCartCount} Urun)
+                  </h4>
+                </div>
+                <div className="max-h-[260px] overflow-y-auto">
+                  {cart.length === 0 ? (
+                    <p className="p-4 text-sm text-gray-500">Sepet bos.</p>
+                  ) : (
+                    cart.map((item) => (
+                      <div
+                        key={`mobile-${item.product.id}`}
+                        className="p-4 border-b flex gap-3 items-start"
+                      >
+                        <img
+                          src={getCartImage(item.product)}
+                          alt={item.product.name}
+                          className="w-14 h-14 object-cover rounded border"
+                        />
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-[#252B42] line-clamp-2">
+                            {item.product.name}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Adet: {item.count}
+                          </p>
+                          <p className="text-sm text-[#E77C40] font-semibold mt-1">
+                            ${item.product.price}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </header>

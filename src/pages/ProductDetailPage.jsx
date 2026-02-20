@@ -9,6 +9,7 @@ import "swiper/css/navigation";
 
 import ProductCard from "../components/ProductCard";
 import { fetchProductById } from "../store/thunks/productThunks";
+import { addToCart } from "../store/actions/shoppingCartActions";
 import api from "../api/axiosInstance";
 import hooli from "../assets/brands/hooli.png";
 import lyft from "../assets/brands/lyft.png";
@@ -76,6 +77,11 @@ export default function ProductDetailPage() {
 
   const ratingValue = Number(productDetail?.rating || 0);
   const ratingStars = Math.round(ratingValue);
+
+  const handleAddToCart = () => {
+    if (!productDetail) return;
+    dispatch(addToCart(productDetail));
+  };
 
   return (
     <div className="flex flex-col">
@@ -198,8 +204,12 @@ export default function ProductDetailPage() {
                 </div>
 
                 <div className="flex items-center gap-4 mt-4">
-                  <button className="bg-[#23A6F0] text-white px-6 py-3">
-                    Select Options
+                  <button
+                    type="button"
+                    onClick={handleAddToCart}
+                    className="bg-[#23A6F0] text-white px-6 py-3"
+                  >
+                    Add To Cart
                   </button>
                   <button className="w-10 h-10 border flex items-center justify-center">
                     <Heart size={18} />
