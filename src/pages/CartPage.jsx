@@ -22,8 +22,10 @@ const getCartImage = (product) => {
 function CartPage() {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.shoppingCart.cart);
+  const SHIPPING_PRICE = 29.99;
+  const FREE_SHIPPING_THRESHOLD = 100;
 
-  const selectedTotal = useMemo(
+  const productsTotal = useMemo(
     () =>
       cart.reduce((sum, item) => {
         if (!item.checked) return sum;
@@ -31,6 +33,11 @@ function CartPage() {
       }, 0),
     [cart],
   );
+
+  const shippingTotal = productsTotal > 0 ? SHIPPING_PRICE : 0;
+  const discount =
+    productsTotal >= FREE_SHIPPING_THRESHOLD ? shippingTotal : 0;
+  const grandTotal = productsTotal + shippingTotal - discount;
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-8">
@@ -43,85 +50,117 @@ function CartPage() {
           Sepet bos.
         </div>
       ) : (
-        <div className="space-y-4">
-          {cart.map((item) => (
-            <div key={item.product.id} className="border rounded-md overflow-hidden">
-              <div className="bg-[#E7F5EE] text-[#23856D] text-sm text-center py-2 font-semibold">
-                Kargo Bedava!
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 items-center">
-                <div className="md:col-span-1 flex justify-center">
-                  <input
-                    type="checkbox"
-                    checked={Boolean(item.checked)}
-                    onChange={() => dispatch(toggleCartItemChecked(item.product.id))}
-                    className="h-5 w-5"
-                  />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-8 space-y-4">
+            {cart.map((item) => (
+              <div key={item.product.id} className="border rounded-md overflow-hidden">
+                <div className="bg-[#E7F5EE] text-[#23856D] text-sm text-center py-2 font-semibold">
+                  Kargo Bedava!
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 items-center">
+                  <div className="md:col-span-1 flex justify-center">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(item.checked)}
+                      onChange={() => dispatch(toggleCartItemChecked(item.product.id))}
+                      className="h-5 w-5"
+                    />
+                  </div>
 
-                <div className="md:col-span-1">
-                  <img
-                    src={getCartImage(item.product)}
-                    alt={item.product.name}
-                    className="w-20 h-20 object-cover border rounded"
-                  />
-                </div>
+                  <div className="md:col-span-1">
+                    <img
+                      src={getCartImage(item.product)}
+                      alt={item.product.name}
+                      className="w-20 h-20 object-cover border rounded"
+                    />
+                  </div>
 
-                <div className="md:col-span-4">
-                  <h3 className="font-semibold text-[#252B42]">{item.product.name}</h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Stock: {item.product.stock ?? "-"}
-                  </p>
-                </div>
+                  <div className="md:col-span-4">
+                    <h3 className="font-semibold text-[#252B42]">{item.product.name}</h3>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Stock: {item.product.stock ?? "-"}
+                    </p>
+                  </div>
 
-                <div className="md:col-span-3">
-                  <div className="inline-flex items-center border rounded">
+                  <div className="md:col-span-3">
+                    <div className="inline-flex items-center border rounded">
+                      <button
+                        type="button"
+                        onClick={() => dispatch(decrementCartItem(item.product.id))}
+                        className="px-3 py-1 text-xl text-gray-500 hover:bg-gray-50"
+                      >
+                        -
+                      </button>
+                      <span className="px-4 py-1 border-x">{item.count}</span>
+                      <button
+                        type="button"
+                        onClick={() => dispatch(incrementCartItem(item.product.id))}
+                        className="px-3 py-1 text-xl text-gray-500 hover:bg-gray-50"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-2 text-right">
+                    <p className="text-2xl text-[#E77C40] font-semibold">
+                      ${(Number(item.product.price) * Number(item.count || 0)).toFixed(2)}
+                    </p>
+                  </div>
+
+                  <div className="md:col-span-1 text-right">
                     <button
                       type="button"
-                      onClick={() => dispatch(decrementCartItem(item.product.id))}
-                      className="px-3 py-1 text-xl text-gray-500 hover:bg-gray-50"
+                      onClick={() => dispatch(removeCartItem(item.product.id))}
+                      className="text-gray-500 hover:text-red-500 text-sm underline"
+                      aria-label="Remove item"
                     >
-                      -
-                    </button>
-                    <span className="px-4 py-1 border-x">{item.count}</span>
-                    <button
-                      type="button"
-                      onClick={() => dispatch(incrementCartItem(item.product.id))}
-                      className="px-3 py-1 text-xl text-gray-500 hover:bg-gray-50"
-                    >
-                      +
+                      Remove
                     </button>
                   </div>
                 </div>
+              </div>
+            ))}
+          </div>
 
-                <div className="md:col-span-2 text-right">
-                  <p className="text-2xl text-[#E77C40] font-semibold">
-                    ${(Number(item.product.price) * Number(item.count || 0)).toFixed(2)}
-                  </p>
+          <aside className="lg:col-span-4">
+            <div className="border rounded-md p-5 sticky top-6">
+              <h2 className="text-2xl text-[#252B42] mb-5">Siparis Ozeti</h2>
+
+              <div className="space-y-3 text-base">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Urunun Toplami</span>
+                  <span className="font-semibold">${productsTotal.toFixed(2)}</span>
                 </div>
-
-                <div className="md:col-span-1 text-right">
-                  <button
-                    type="button"
-                    onClick={() => dispatch(removeCartItem(item.product.id))}
-                    className="text-gray-500 hover:text-red-500 text-xl"
-                    aria-label="Remove item"
-                  >
-                    🗑
-                  </button>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Kargo Toplam</span>
+                  <span className="font-semibold">${shippingTotal.toFixed(2)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">
+                    {FREE_SHIPPING_THRESHOLD} TL ve Uzeri Kargo Bedava (Satici Karsilar)
+                  </span>
+                  <span className="font-semibold text-[#E77C40]">
+                    -${discount.toFixed(2)}
+                  </span>
                 </div>
               </div>
-            </div>
-          ))}
 
-          <div className="border rounded-md p-4 flex items-center justify-between">
-            <span className="text-lg font-semibold text-[#252B42]">
-              Secili Urunler Toplami
-            </span>
-            <span className="text-2xl font-bold text-[#23A6F0]">
-              ${selectedTotal.toFixed(2)}
-            </span>
-          </div>
+              <div className="mt-5 pt-4 border-t flex items-center justify-between">
+                <span className="text-2xl text-[#252B42]">Toplam</span>
+                <span className="text-3xl font-bold text-[#E77C40]">
+                  ${grandTotal.toFixed(2)}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                className="mt-6 w-full h-12 bg-[#F27A1A] text-white font-semibold rounded-md"
+              >
+                Create Order
+              </button>
+            </div>
+          </aside>
         </div>
       )}
     </section>
