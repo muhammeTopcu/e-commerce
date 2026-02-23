@@ -283,6 +283,21 @@ function Header() {
                         ))
                       )}
                     </div>
+                    <div className="p-3 flex items-center gap-2">
+                      <Link
+                        to="/cart"
+                        onClick={() => setCartOpen(false)}
+                        className="flex-1 border rounded px-3 py-2 text-center text-sm text-[#252B42]"
+                      >
+                        Sepete Git
+                      </Link>
+                      <button
+                        type="button"
+                        className="flex-1 rounded px-3 py-2 text-sm text-white bg-[#F27A1A]"
+                      >
+                        Siparisi Tamamla
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -406,6 +421,24 @@ function Header() {
                       </div>
                     ))
                   )}
+                </div>
+                <div className="p-3 flex items-center gap-2">
+                  <Link
+                    to="/cart"
+                    onClick={() => {
+                      setCartOpen(false);
+                      setMobileOpen(false);
+                    }}
+                    className="flex-1 border rounded px-3 py-2 text-center text-sm text-[#252B42]"
+                  >
+                    Sepete Git
+                  </Link>
+                  <button
+                    type="button"
+                    className="flex-1 rounded px-3 py-2 text-sm text-white bg-[#F27A1A]"
+                  >
+                    Siparisi Tamamla
+                  </button>
                 </div>
               </div>
             </div>
