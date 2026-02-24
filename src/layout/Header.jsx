@@ -291,12 +291,13 @@ function Header() {
                       >
                         Sepete Git
                       </Link>
-                      <button
-                        type="button"
-                        className="flex-1 rounded px-3 py-2 text-sm text-white bg-[#F27A1A]"
+                      <Link
+                        to="/create-order"
+                        onClick={() => setCartOpen(false)}
+                        className="flex-1 rounded px-3 py-2 text-sm text-white bg-[#F27A1A] text-center"
                       >
                         Siparisi Tamamla
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -433,12 +434,16 @@ function Header() {
                   >
                     Sepete Git
                   </Link>
-                  <button
-                    type="button"
-                    className="flex-1 rounded px-3 py-2 text-sm text-white bg-[#F27A1A]"
+                  <Link
+                    to="/create-order"
+                    onClick={() => {
+                      setCartOpen(false);
+                      setMobileOpen(false);
+                    }}
+                    className="flex-1 rounded px-3 py-2 text-sm text-white bg-[#F27A1A] text-center"
                   >
                     Siparisi Tamamla
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

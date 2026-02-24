@@ -1,5 +1,5 @@
 import api from "../../api/axiosInstance";
-import { setRoles } from "../actions/clientActions";
+import { setAddressList, setRoles } from "../actions/clientActions";
 
 let rolesRequestPromise = null;
 
@@ -37,4 +37,26 @@ export const fetchRolesIfNeeded = () => async (dispatch, getState) => {
     });
 
   return rolesRequestPromise;
+};
+
+export const fetchAddressList = () => async (dispatch) => {
+  const response = await api.get("/user/address");
+  const list = Array.isArray(response.data) ? response.data : [];
+  dispatch(setAddressList(list));
+  return list;
+};
+
+export const createAddress = (payload) => async (dispatch) => {
+  await api.post("/user/address", payload);
+  return dispatch(fetchAddressList());
+};
+
+export const updateAddress = (payload) => async (dispatch) => {
+  await api.put("/user/address", payload);
+  return dispatch(fetchAddressList());
+};
+
+export const deleteAddress = (addressId) => async (dispatch) => {
+  await api.delete(`/user/address/${addressId}`);
+  return dispatch(fetchAddressList());
 };

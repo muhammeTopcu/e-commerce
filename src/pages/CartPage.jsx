@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   decrementCartItem,
@@ -29,14 +30,15 @@ function CartPage() {
     () =>
       cart.reduce((sum, item) => {
         if (!item.checked) return sum;
-        return sum + Number(item?.count || 0) * Number(item?.product?.price || 0);
+        return (
+          sum + Number(item?.count || 0) * Number(item?.product?.price || 0)
+        );
       }, 0),
     [cart],
   );
 
   const shippingTotal = productsTotal > 0 ? SHIPPING_PRICE : 0;
-  const discount =
-    productsTotal >= FREE_SHIPPING_THRESHOLD ? shippingTotal : 0;
+  const discount = productsTotal >= FREE_SHIPPING_THRESHOLD ? shippingTotal : 0;
   const grandTotal = productsTotal + shippingTotal - discount;
 
   return (
@@ -53,16 +55,24 @@ function CartPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-8 space-y-4">
             {cart.map((item) => (
-              <div key={item.product.id} className="border rounded-md overflow-hidden">
-                <div className="bg-[#E7F5EE] text-[#23856D] text-sm text-center py-2 font-semibold">
-                  Kargo Bedava!
-                </div>
+              <div
+                key={item.product.id}
+                className="border rounded-md overflow-hidden"
+              >
+                {Number(item?.product?.price || 0) * Number(item?.count || 0) >=
+                  FREE_SHIPPING_THRESHOLD && (
+                  <div className="bg-[#E7F5EE] text-[#23856D] text-sm text-center py-2 font-semibold">
+                    Kargo Bedava!
+                  </div>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 items-center">
                   <div className="md:col-span-1 flex justify-center">
                     <input
                       type="checkbox"
                       checked={Boolean(item.checked)}
-                      onChange={() => dispatch(toggleCartItemChecked(item.product.id))}
+                      onChange={() =>
+                        dispatch(toggleCartItemChecked(item.product.id))
+                      }
                       className="h-5 w-5"
                     />
                   </div>
@@ -76,7 +86,9 @@ function CartPage() {
                   </div>
 
                   <div className="md:col-span-4">
-                    <h3 className="font-semibold text-[#252B42]">{item.product.name}</h3>
+                    <h3 className="font-semibold text-[#252B42]">
+                      {item.product.name}
+                    </h3>
                     <p className="text-sm text-gray-500 mt-1">
                       Stock: {item.product.stock ?? "-"}
                     </p>
@@ -86,7 +98,9 @@ function CartPage() {
                     <div className="inline-flex items-center border rounded">
                       <button
                         type="button"
-                        onClick={() => dispatch(decrementCartItem(item.product.id))}
+                        onClick={() =>
+                          dispatch(decrementCartItem(item.product.id))
+                        }
                         className="px-3 py-1 text-xl text-gray-500 hover:bg-gray-50"
                       >
                         -
@@ -94,7 +108,9 @@ function CartPage() {
                       <span className="px-4 py-1 border-x">{item.count}</span>
                       <button
                         type="button"
-                        onClick={() => dispatch(incrementCartItem(item.product.id))}
+                        onClick={() =>
+                          dispatch(incrementCartItem(item.product.id))
+                        }
                         className="px-3 py-1 text-xl text-gray-500 hover:bg-gray-50"
                       >
                         +
@@ -104,7 +120,10 @@ function CartPage() {
 
                   <div className="md:col-span-2 text-right">
                     <p className="text-2xl text-[#E77C40] font-semibold">
-                      ${(Number(item.product.price) * Number(item.count || 0)).toFixed(2)}
+                      $
+                      {(
+                        Number(item.product.price) * Number(item.count || 0)
+                      ).toFixed(2)}
                     </p>
                   </div>
 
@@ -130,15 +149,20 @@ function CartPage() {
               <div className="space-y-3 text-base">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">Urunun Toplami</span>
-                  <span className="font-semibold">${productsTotal.toFixed(2)}</span>
+                  <span className="font-semibold">
+                    ${productsTotal.toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">Kargo Toplam</span>
-                  <span className="font-semibold">${shippingTotal.toFixed(2)}</span>
+                  <span className="font-semibold">
+                    ${shippingTotal.toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">
-                    {FREE_SHIPPING_THRESHOLD} TL ve Uzeri Kargo Bedava (Satici Karsilar)
+                    {FREE_SHIPPING_THRESHOLD} TL ve Uzeri Kargo Bedava (Satici
+                    Karsilar)
                   </span>
                   <span className="font-semibold text-[#E77C40]">
                     -${discount.toFixed(2)}
@@ -153,12 +177,12 @@ function CartPage() {
                 </span>
               </div>
 
-              <button
-                type="button"
-                className="mt-6 w-full h-12 bg-[#F27A1A] text-white font-semibold rounded-md"
+              <Link
+                to="/create-order"
+                className="mt-6 w-full h-14 bg-[#F27A1A] text-white text-lg font-semibold rounded-md flex items-center justify-center"
               >
-                Create Order
-              </button>
+                Siparisi Tamamla
+              </Link>
             </div>
           </aside>
         </div>
@@ -168,3 +192,4 @@ function CartPage() {
 }
 
 export default CartPage;
+
