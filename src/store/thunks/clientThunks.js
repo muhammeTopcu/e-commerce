@@ -1,5 +1,5 @@
 import api from "../../api/axiosInstance";
-import { setAddressList, setRoles } from "../actions/clientActions";
+import { setAddressList, setCreditCards, setRoles } from "../actions/clientActions";
 
 let rolesRequestPromise = null;
 
@@ -59,4 +59,26 @@ export const updateAddress = (payload) => async (dispatch) => {
 export const deleteAddress = (addressId) => async (dispatch) => {
   await api.delete(`/user/address/${addressId}`);
   return dispatch(fetchAddressList());
+};
+
+export const fetchCards = () => async (dispatch) => {
+  const response = await api.get("/user/card");
+  const list = Array.isArray(response.data) ? response.data : [];
+  dispatch(setCreditCards(list));
+  return list;
+};
+
+export const createCard = (payload) => async (dispatch) => {
+  await api.post("/user/card", payload);
+  return dispatch(fetchCards());
+};
+
+export const updateCard = (payload) => async (dispatch) => {
+  await api.put("/user/card", payload);
+  return dispatch(fetchCards());
+};
+
+export const deleteCard = (cardId) => async (dispatch) => {
+  await api.delete(`/user/card/${cardId}`);
+  return dispatch(fetchCards());
 };
