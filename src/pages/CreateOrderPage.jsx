@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
@@ -13,7 +14,12 @@ import {
   updateAddress,
   updateCard,
 } from "../store/thunks/clientThunks";
-import { setAddress, setPayment } from "../store/actions/shoppingCartActions";
+import {
+  setAddress,
+  setCart,
+  setPayment,
+} from "../store/actions/shoppingCartActions";
+import api from "../api/axiosInstance";
 
 const CITY_OPTIONS = [
   "istanbul",
@@ -36,6 +42,7 @@ const maskCardNo = (cardNo = "") => {
 };
 
 function CreateOrderPage() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const addressList = useSelector((state) => state.client.addressList);
   const cards = useSelector((state) => state.client.creditCards);
@@ -51,6 +58,7 @@ function CreateOrderPage() {
   const [showCardForm, setShowCardForm] = useState(false);
   const [editingCard, setEditingCard] = useState(null);
   const [selectedCardId, setSelectedCardId] = useState(null);
+  const [orderCvv, setOrderCvv] = useState("");
   const [saving, setSaving] = useState(false);
 
   const {
@@ -252,15 +260,66 @@ function CreateOrderPage() {
     }, 250);
   };
 
-  const handleCreateOrder = () => {
+  const handleCreateOrder = async () => {
+    const shippingAddress = addressList.find((a) => a.id === selectedShippingId);
     const selectedCard = cards.find((card) => card.id === selectedCardId);
+    const selectedProducts = cart.filter((item) => item.checked);
+
+    if (!shippingAddress) {
+      toast.error("Please select an address.");
+      return;
+    }
+
     if (!selectedCard) {
       toast.error("Please select a card.");
       return;
     }
 
-    dispatch(setPayment({ card: selectedCard }));
-    toast.info("Create Order will be implemented in next task.");
+    if (orderCvv.length !== 3) {
+      toast.error("Please enter a valid 3-digit CVV.");
+      return;
+    }
+
+    if (selectedProducts.length === 0) {
+      toast.error("Please select at least one product.");
+      return;
+    }
+
+    const payload = {
+      address_id: shippingAddress.id,
+      order_date: new Date().toISOString().slice(0, 19),
+      card_no: String(selectedCard.card_no).replace(/\s+/g, ""),
+      card_name: selectedCard.name_on_card,
+      card_expire_month: Number(selectedCard.expire_month),
+      card_expire_year: Number(selectedCard.expire_year),
+      card_ccv: Number(orderCvv),
+      price: Number(grandTotal.toFixed(2)),
+      products: selectedProducts.map((item) => ({
+        product_id: item.product.id,
+        count: item.count,
+        detail: item?.product?.name || "selected item",
+      })),
+    };
+
+    try {
+      setSaving(true);
+      await api.post("/order", payload);
+      dispatch(setPayment({}));
+      dispatch(setCart([]));
+      dispatch(setAddress({}));
+      setOrderCvv("");
+      setCurrentStep(1);
+      toast.success("Congratulations! Your order has been created.", {
+        autoClose: 1400,
+        onClose: () => navigate("/"),
+      });
+    } catch (error) {
+      const message =
+        error?.response?.data?.message || "Order could not be created.";
+      toast.error(message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -556,56 +615,77 @@ function CreateOrderPage() {
               {cards.length === 0 ? (
                 <p className="text-sm text-gray-500">No saved cards.</p>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {cards.map((card) => (
-                    <div
-                      key={card.id}
-                      className={`border rounded-md p-4 cursor-pointer ${
-                        selectedCardId === card.id ? "border-[#F27A1A]" : ""
-                      }`}
-                      onClick={() => setSelectedCardId(card.id)}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="savedCard"
-                            checked={selectedCardId === card.id}
-                            onChange={() => setSelectedCardId(card.id)}
-                          />
-                          <span className="font-semibold">Saved Card</span>
-                        </label>
-                        <div className="flex gap-2">
-                          <button
-                            type="button"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleEditCard(card);
-                            }}
-                            className="text-xs underline"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            type="button"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleDeleteCard(card.id);
-                            }}
-                            className="text-xs text-red-500 underline"
-                          >
-                            Delete
-                          </button>
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {cards.map((card) => (
+                      <div
+                        key={card.id}
+                        className={`border rounded-md p-4 cursor-pointer ${
+                          selectedCardId === card.id ? "border-[#F27A1A]" : ""
+                        }`}
+                        onClick={() => setSelectedCardId(card.id)}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="savedCard"
+                              checked={selectedCardId === card.id}
+                              onChange={() => setSelectedCardId(card.id)}
+                            />
+                            <span className="font-semibold">Saved Card</span>
+                          </label>
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleEditCard(card);
+                              }}
+                              className="text-xs underline"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleDeleteCard(card.id);
+                              }}
+                              className="text-xs text-red-500 underline"
+                            >
+                              Delete
+                            </button>
+                          </div>
                         </div>
+                        <p className="text-lg font-semibold mt-3">
+                          {maskCardNo(card.card_no)}
+                        </p>
+                        <p className="text-sm text-gray-600 mt-1">
+                          {card.expire_month}/{card.expire_year}
+                        </p>
+                        <p className="text-sm text-gray-600">{card.name_on_card}</p>
                       </div>
-                      <p className="text-lg font-semibold mt-3">{maskCardNo(card.card_no)}</p>
-                      <p className="text-sm text-gray-600 mt-1">
-                        {card.expire_month}/{card.expire_year}
-                      </p>
-                      <p className="text-sm text-gray-600">{card.name_on_card}</p>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                  <div className="mt-4 max-w-[220px]">
+                    <label className="block text-sm font-semibold text-[#252B42] mb-1">
+                      CVV
+                    </label>
+                    <input
+                      value={orderCvv}
+                      onChange={(event) =>
+                        setOrderCvv(
+                          String(event.target.value).replace(/\D/g, "").slice(0, 3),
+                        )
+                      }
+                      maxLength={3}
+                      inputMode="numeric"
+                      className="border px-3 py-3 text-sm w-full"
+                      placeholder="123"
+                    />
+                  </div>
+                </>
               )}
             </div>
           )}
@@ -625,7 +705,9 @@ function CreateOrderPage() {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-gray-600">100+ Kargo Indirimi</span>
-                <span className="font-semibold text-[#E77C40]">-${discount.toFixed(2)}</span>
+                <span className="font-semibold text-[#E77C40]">
+                  -${discount.toFixed(2)}
+                </span>
               </div>
             </div>
             <div className="mt-5 pt-4 border-t flex items-center justify-between">
