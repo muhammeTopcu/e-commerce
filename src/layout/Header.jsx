@@ -48,6 +48,7 @@ function Header() {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const location = useLocation();
   const user = useSelector((state) => state.client.user);
   const categories = useSelector((state) => state.product.categories);
@@ -82,6 +83,7 @@ function Header() {
     dispatch(setUser({}));
     setMobileOpen(false);
     setCartOpen(false);
+    setUserMenuOpen(false);
     navigate("/");
   };
 
@@ -206,21 +208,39 @@ function Header() {
           <div className="flex items-center gap-4 text-blue-500">
             <div className="hidden md:flex items-center gap-2">
               {userEmail ? (
-                <div className="flex items-center gap-2 text-gray-700">
-                  <Gravatar
-                    email={userEmail}
-                    size={28}
-                    default="identicon"
-                    className="rounded-full"
-                  />
-                  <span className="text-sm font-medium">{userName}</span>
+                <div className="relative">
                   <button
                     type="button"
-                    onClick={handleLogout}
-                    className="text-xs text-blue-500 hover:text-red-600"
+                    onClick={() => setUserMenuOpen((prev) => !prev)}
+                    className="flex items-center gap-2 text-gray-700"
                   >
-                    Logout
+                    <Gravatar
+                      email={userEmail}
+                      size={28}
+                      default="identicon"
+                      className="rounded-full"
+                    />
+                    <span className="text-sm font-medium">{userName}</span>
+                    <span className="text-xs">v</span>
                   </button>
+                  {userMenuOpen && (
+                    <div className="absolute right-0 top-full mt-2 w-40 rounded-md border bg-white shadow-lg z-50">
+                      <Link
+                        to="/orders"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Previous Orders
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <>
@@ -349,6 +369,13 @@ function Header() {
                   className="rounded-full"
                 />
                 <span className="text-sm font-medium">{userName}</span>
+                <Link
+                  to="/orders"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-xs text-blue-500"
+                >
+                  Orders
+                </Link>
                 <button
                   type="button"
                   onClick={handleLogout}

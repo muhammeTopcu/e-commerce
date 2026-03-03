@@ -12,6 +12,7 @@ import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
 import CreateOrderPage from "./pages/CreateOrderPage";
+import OrdersPage from "./pages/OrdersPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { verifyStoredToken } from "./store/thunks/authThunks";
 import { fetchCategoriesIfNeeded } from "./store/thunks/productThunks";
@@ -50,6 +51,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CreateOrderPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <OrdersPage />
             </ProtectedRoute>
           }
         />
